@@ -14,19 +14,12 @@ import ui.HomePresenter;
 public class HomeFragment extends SurveyBaseFragment<HomePresenter, HomeFragment.LoginIntraction> {
 
 
-
     public HomeFragment() {
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 
     @Override
     public void postInit() {
         super.postInit();
-
     }
 
     @Override
