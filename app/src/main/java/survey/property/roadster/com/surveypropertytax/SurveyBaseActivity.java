@@ -1,7 +1,6 @@
 package survey.property.roadster.com.surveypropertytax;
 
 import android.os.Bundle;
-import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,7 +17,6 @@ import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasFragmentInjector;
 import dagger.android.support.DaggerAppCompatActivity;
 import dagger.android.support.HasSupportFragmentInjector;
-import ui.fragment.LoginFragment;
 
 public abstract class SurveyBaseActivity extends DaggerAppCompatActivity implements HasFragmentInjector, HasSupportFragmentInjector {
 
@@ -33,7 +31,6 @@ public abstract class SurveyBaseActivity extends DaggerAppCompatActivity impleme
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
-        setContentView(getLayout());
         setContentView(R.layout.activity_base);
 
         vMainContainer = findViewById(R.id.main_container);

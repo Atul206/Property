@@ -4,20 +4,18 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import javax.inject.Inject;
-
 import di.FragmentScope;
 import survey.property.roadster.com.surveypropertytax.BaseIntranction;
 import survey.property.roadster.com.surveypropertytax.R;
 import survey.property.roadster.com.surveypropertytax.SurveyBaseFragment;
-import ui.LoginPresenter;
+import ui.HomePresenter;
 
 @FragmentScope
-public class LoginFragment extends SurveyBaseFragment<LoginPresenter, LoginFragment.LoginIntraction> {
+public class HomeFragment extends SurveyBaseFragment<HomePresenter, HomeFragment.LoginIntraction> {
 
 
 
-    public LoginFragment() {
+    public HomeFragment() {
     }
 
     @Override
@@ -25,6 +23,11 @@ public class LoginFragment extends SurveyBaseFragment<LoginPresenter, LoginFragm
         super.onCreate(savedInstanceState);
     }
 
+    @Override
+    public void postInit() {
+        super.postInit();
+
+    }
 
     @Override
     public int getLayout() {

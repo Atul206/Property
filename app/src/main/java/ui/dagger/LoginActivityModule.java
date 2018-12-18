@@ -4,14 +4,14 @@ import dagger.Module;
 import dagger.Provides;
 import di.ActivityScope;
 import survey.property.roadster.com.surveypropertytax.SurveyBaseActivity;
-import ui.LoginActivity;
+import ui.HomeActivity;
 
 @Module
 public class LoginActivityModule {
 
     @ActivityScope
     @Provides
-    public static SurveyBaseActivity surveyBaseActivity(LoginActivity loginActivity){
-        return loginActivity;
+    public static SurveyBaseActivity surveyBaseActivity(HomeActivity homeActivity){
+        return homeActivity;
     }
 }

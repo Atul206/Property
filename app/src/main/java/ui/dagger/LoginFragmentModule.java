@@ -4,15 +4,14 @@ import dagger.Binds;
 import dagger.Module;
 import survey.property.roadster.com.surveypropertytax.SurveyBaseFragment;
 import survey.property.roadster.com.surveypropertytax.SurveyBaseFragmentModule;
-import ui.LoginView;
-import ui.fragment.LoginFragment;
+import ui.fragment.HomeFragment;
 
 @Module(includes = {SurveyBaseFragmentModule.class})
 public abstract class LoginFragmentModule {
 
     @Binds
-    abstract SurveyBaseFragment loginFragment(LoginFragment loginFragment);
+    abstract SurveyBaseFragment loginFragment(HomeFragment homeFragment);
 
     /*@Binds
-    abstract LoginView loginView(LoginFragment loginFragment);*/
+    abstract HomeView loginView(HomeFragment loginFragment);*/
 }

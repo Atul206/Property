@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "988514458353",
+    "firebase_url": "https://survey-5b55a.firebaseio.com",
+    "project_id": "survey-5b55a",
+    "storage_bucket": "survey-5b55a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:988514458353:android:0336b56b39fbb632",
+        "android_client_info": {
+          "package_name": "survey.property.roadster.com.surveypropertytax"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "988514458353-kvgjjr4meq38oevh1va0dbnmmenegckr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "survey.property.roadster.com.surveypropertytax",
+            "certificate_hash": "2d197cf47d2824f4d085f5785704ab720392357c"
+          }
+        },
+        {
+          "client_id": "988514458353-m2ii9urihgu5fclkgtf3qj8618sgt50o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgTYgyYTK3OWHKnLK8vRm_vHN9cPSQ-wE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "988514458353-m2ii9urihgu5fclkgtf3qj8618sgt50o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

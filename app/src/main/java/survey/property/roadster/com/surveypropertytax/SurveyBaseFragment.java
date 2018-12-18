@@ -22,6 +22,7 @@ public abstract class SurveyBaseFragment<P, T extends BaseIntranction> extends D
     @Inject
     protected P mPresenter;
 
+
     private T mListener;
 
     @CallSuper
@@ -73,9 +74,20 @@ public abstract class SurveyBaseFragment<P, T extends BaseIntranction> extends D
 
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mListener = null;
+    }
+
     @LayoutRes
     public abstract int getLayout();
 
     @NonNull
     protected abstract Class<T> getListenerClass();
+
+    @NonNull
+    protected T getActivityCommunicator() {
+        return mListener;
+    }
 }

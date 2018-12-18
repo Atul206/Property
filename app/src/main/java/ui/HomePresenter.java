@@ -2,9 +2,9 @@ package ui;
 
 import javax.inject.Inject;
 
-public class LoginPresenter {
+public class HomePresenter {
 
     @Inject
-    public LoginPresenter() {
+    public HomePresenter() {
     }
 }
