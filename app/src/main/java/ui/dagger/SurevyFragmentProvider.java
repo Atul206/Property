@@ -6,9 +6,9 @@ import di.FragmentScope;
 import ui.fragment.HomeFragment;
 
 @Module
-public abstract class LoginFragmentProvider {
+public abstract class SurevyFragmentProvider {
 
-    @ContributesAndroidInjector(modules = {LoginFragmentModule.class})
+    @ContributesAndroidInjector(modules = {HomeFragmentModule.class})
     @FragmentScope
     abstract HomeFragment loginFragment();
 }

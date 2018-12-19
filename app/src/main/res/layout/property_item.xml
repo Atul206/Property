@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/main_layout"
+    android:padding="5dp"
+    android:background="@android:color/white">
+
+    <TextView
+        android:layout_marginTop="5sp"
+        android:layout_marginLeft="5sp"
+        android:id="@+id/property_id"
+        android:text="Property id: 121231221312"
+        android:textSize="18sp"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <TextView
+        android:layout_marginTop="5sp"
+        android:layout_marginRight="20sp"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:id="@+id/property_distance"
+        android:textColor="@color/colorPrimaryDark"
+        android:text="1 Km"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_marginTop="5sp"
+        android:layout_marginBottom="5sp"
+        android:layout_marginRight="20sp"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:id="@+id/property_name"
+        android:textColor="@color/colorPrimaryDark"
+        android:text="Roy property and villa"
+        android:layout_marginLeft="5sp"
+        app:layout_constraintTop_toBottomOf="@id/property_id"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+    <View
+        android:layout_marginLeft="10sp"
+        android:layout_marginRight="10sp"
+        app:layout_constraintTop_toBottomOf="@id/property_name"
+        android:background="@android:color/darker_gray"
+        android:layout_width="match_parent"
+        android:layout_height="1sp" />
+
+
+
+</android.support.constraint.ConstraintLayout>

@@ -9,11 +9,14 @@ import android.arch.persistence.room.Update;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
+
+
 @Dao
 public interface PropertyLoadDao {
 
     @Query("SELECT *from property where uid not null")
-    List<PropertyDbObject> getAllProperties();
+    Flowable<List<PropertyDbObject>> getAllProperties();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<PropertyDbObject> propertyDbObjects);
@@ -29,4 +32,8 @@ public interface PropertyLoadDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(PropertyDbObject tripLoadDbObject);
+
+    @Query("SELECT *from property where name like '%' || :arg || '%' or " +
+            "property_id like '%' || :arg || '%'")
+    Flowable<List<PropertyDbObject>> getSearchProperties(String arg);
 }

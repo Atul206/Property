@@ -6,6 +6,7 @@ import android.support.annotation.CallSuper;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.FrameLayout;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.support.AndroidSupportInjection;
 import dagger.android.support.DaggerFragment;
@@ -24,6 +26,8 @@ public abstract class SurveyBaseFragment<P, T extends BaseIntranction> extends D
 
 
     private T mListener;
+
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @CallSuper
     @Override
@@ -60,6 +64,7 @@ public abstract class SurveyBaseFragment<P, T extends BaseIntranction> extends D
         super.onActivityCreated(savedInstanceState);
         preInit();
         initLayout();
+        initListener();
         postInit();
 
     }
@@ -85,6 +90,10 @@ public abstract class SurveyBaseFragment<P, T extends BaseIntranction> extends D
 
     @NonNull
     protected abstract Class<T> getListenerClass();
+
+    protected abstract SwipeRefreshLayout getSwipRefreshView();
+
+    protected abstract void initListener();
 
     @NonNull
     protected T getActivityCommunicator() {

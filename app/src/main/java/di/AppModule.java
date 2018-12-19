@@ -11,6 +11,7 @@ import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
 import survey.property.roadster.com.surveypropertytax.db.AppDatabase;
+import survey.property.roadster.com.surveypropertytax.db.PropertyLoadDao;
 
 @Singleton
 @Module
@@ -29,5 +30,11 @@ public class AppModule {
         return Room.databaseBuilder(application, AppDatabase.class, "property-database")
                 .fallbackToDestructiveMigration()
                 .build();
+    }
+
+    @Provides
+    @Singleton
+    PropertyLoadDao propertyLoadDao(AppDatabase appDatabase) {
+        return appDatabase.propertyLoadDao();
     }
 }

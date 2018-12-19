@@ -20,6 +20,12 @@ public class HomeActivity extends SurveyBaseActivity implements HomeFragment.Log
     }
 
     @Override
+    public void gotoFormFragment() {
+        //TODO : @anshul intiate your developed fragment
+        //startFragment();
+    }
+
+    @Override
     public Class<? extends SurveyBaseFragment> initialFragmentClass() {
         return HomeFragment.class;
     }

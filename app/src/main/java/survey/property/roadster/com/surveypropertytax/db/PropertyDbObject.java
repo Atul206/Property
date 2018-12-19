@@ -32,8 +32,7 @@ public class PropertyDbObject {
     @ColumnInfo(name = "longitude")
     private String longitude;
 
-    public PropertyDbObject(int uid, @NonNull Long propertyId, @NonNull String propertyName, @NonNull String latitude, @NonNull String longitude) {
-        this.uid = uid;
+    public PropertyDbObject(@NonNull Long propertyId, @NonNull String propertyName, @NonNull String latitude, @NonNull String longitude) {
         this.propertyId = propertyId;
         this.propertyName = propertyName;
         this.latitude = latitude;

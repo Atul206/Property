@@ -7,7 +7,7 @@ import survey.property.roadster.com.surveypropertytax.SurveyBaseActivity;
 import ui.HomeActivity;
 
 @Module
-public class LoginActivityModule {
+public class HomeActivityModule {
 
     @ActivityScope
     @Provides
