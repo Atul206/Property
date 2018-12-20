@@ -6,6 +6,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.EditText;
 
+import com.google.firebase.storage.StorageReference;
+
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -33,6 +35,10 @@ public class HomeFragment extends SurveyBaseFragment<HomePresenter, HomeFragment
 
     @Inject
     protected PropertyAdapter adapter;
+
+
+    @Inject
+    StorageReference storageReference;
 
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;

@@ -4,6 +4,11 @@ import android.app.Application;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 
+import com.firebase.jobdispatcher.FirebaseJobDispatcher;
+import com.firebase.jobdispatcher.GooglePlayDriver;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
 import javax.inject.Named;
 import javax.inject.Singleton;
 
@@ -36,5 +41,19 @@ public class AppModule {
     @Singleton
     PropertyLoadDao propertyLoadDao(AppDatabase appDatabase) {
         return appDatabase.propertyLoadDao();
+    }
+
+
+    @Provides
+    @Singleton
+    FirebaseJobDispatcher firebaseJobDispatcher(Application application){
+        return  new FirebaseJobDispatcher(new GooglePlayDriver(application));
+    }
+
+
+    @Provides
+    @Singleton
+    StorageReference firebaseStorage(){
+        return FirebaseStorage.getInstance().getReference();
     }
 }

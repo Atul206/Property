@@ -1,5 +1,9 @@
 package ui;
 
+import com.google.firebase.storage.StorageReference;
+
+import javax.inject.Inject;
+
 import di.ActivityScope;
 import survey.property.roadster.com.surveypropertytax.SurveyBaseActivity;
 import survey.property.roadster.com.surveypropertytax.SurveyBaseFragment;
