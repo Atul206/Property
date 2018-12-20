@@ -3,6 +3,8 @@ package ui;
 import di.ActivityScope;
 import survey.property.roadster.com.surveypropertytax.SurveyBaseActivity;
 import survey.property.roadster.com.surveypropertytax.SurveyBaseFragment;
+import ui.data.PropertyData;
+import ui.data.PropertyDto;
 import ui.fragment.HomeFragment;
 
 @ActivityScope
@@ -20,7 +22,7 @@ public class HomeActivity extends SurveyBaseActivity implements HomeFragment.Log
     }
 
     @Override
-    public void gotoFormFragment() {
+    public void gotoFormFragment(PropertyDto data) {
         //TODO : @anshul intiate your developed fragment
         //startFragment();
     }

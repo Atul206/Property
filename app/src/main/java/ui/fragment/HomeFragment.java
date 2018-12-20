@@ -11,7 +11,6 @@ import javax.inject.Named;
 
 import butterknife.BindView;
 import butterknife.OnTextChanged;
-import dagger.Provides;
 import di.FragmentScope;
 import io.reactivex.subjects.PublishSubject;
 import survey.property.roadster.com.surveypropertytax.BaseIntranction;
@@ -22,6 +21,7 @@ import ui.HomeView;
 import ui.adapter.LoadingAdapter;
 import ui.adapter.PropertyAdapter;
 import ui.data.PropertyData;
+import ui.data.PropertyDto;
 
 @FragmentScope
 public class HomeFragment extends SurveyBaseFragment<HomePresenter, HomeFragment.LoginIntraction>
@@ -99,7 +99,7 @@ public class HomeFragment extends SurveyBaseFragment<HomePresenter, HomeFragment
 
     @Override
     public void onAdapterItemClick(int position, @NonNull PropertyData data) {
-        getActivityCommunicator().gotoFormFragment();
+        getActivityCommunicator().gotoFormFragment(data.getItem().get(position));
     }
 
     public PropertyAdapter getAdapter() {
@@ -118,7 +118,7 @@ public class HomeFragment extends SurveyBaseFragment<HomePresenter, HomeFragment
     }
 
     public interface LoginIntraction extends BaseIntranction {
-        void gotoFormFragment();
+        void gotoFormFragment(PropertyDto data);
     }
 
     @Override
