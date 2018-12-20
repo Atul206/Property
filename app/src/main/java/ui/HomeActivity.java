@@ -9,6 +9,7 @@ import survey.property.roadster.com.surveypropertytax.SurveyBaseActivity;
 import survey.property.roadster.com.surveypropertytax.SurveyBaseFragment;
 import ui.data.PropertyData;
 import ui.data.PropertyDto;
+import ui.fragment.FormFragment;
 import ui.fragment.HomeFragment;
 
 @ActivityScope
@@ -29,6 +30,7 @@ public class HomeActivity extends SurveyBaseActivity implements HomeFragment.Log
     public void gotoFormFragment(PropertyDto data) {
         //TODO : @anshul intiate your developed fragment
         //startFragment();
+        startFragment(FormFragment.class,true);
     }
 
     @Override
