@@ -120,4 +120,10 @@ public class HomeFragment extends SurveyBaseFragment<HomePresenter, HomeFragment
     public interface LoginIntraction extends BaseIntranction {
         void gotoFormFragment();
     }
+
+    @Override
+    public void onDestroyView() {
+        mPresenter.finish();
+        super.onDestroyView();
+    }
 }

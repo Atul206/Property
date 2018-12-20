@@ -96,4 +96,9 @@ public abstract class SurveyBaseActivity extends DaggerAppCompatActivity impleme
     public AndroidInjector<android.app.Fragment> fragmentInjector() {
         return frameworkFragmentInjector;
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }
