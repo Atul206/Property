@@ -13,7 +13,7 @@ import ui.fragment.FormFragment;
 import ui.fragment.HomeFragment;
 
 @ActivityScope
-public class HomeActivity extends SurveyBaseActivity implements HomeFragment.LoginIntraction  {
+public class HomeActivity extends SurveyBaseActivity implements HomeFragment.LoginIntraction, FormFragment.LoginIntraction  {
 
     @Override
     protected int getLayout() {

@@ -7,24 +7,18 @@
     android:background="@android:color/white"
     android:orientation="vertical">
 
-    <GridView
-        android:layout_width="match_parent"
+
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:numColumns="2">
+        android:text="Name"
+        android:textColor="@color/colorPrimaryDark" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimaryDark"
-            android:text="Name"/>
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimaryDark"
-            android:hint="enter naem"/>
-
-    </GridView>
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="enter naem"
+        android:textColor="@color/colorPrimaryDark" />
 
 
 </LinearLayout>
