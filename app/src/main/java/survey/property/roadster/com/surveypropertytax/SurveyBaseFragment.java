@@ -27,8 +27,6 @@ public abstract class SurveyBaseFragment<P, T extends BaseIntranction> extends D
 
     private T mListener;
 
-    SwipeRefreshLayout swipeRefreshLayout;
-
     @CallSuper
     @Override
     public void onAttach(Context context) {
