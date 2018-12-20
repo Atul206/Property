@@ -67,9 +67,9 @@ public class LoginIntroActivity extends MaterialIntroActivity implements LoaderM
         addSlide(new SlideFragmentBuilder()
                         .backgroundColor(R.color.colorPrimary)
                         .buttonsColor(R.color.colorAccent)
-                        .image(agency.tango.materialintroscreen.R.drawable.ic_finish)
-                        .title("Property survey")
-                        .description("Description 3")
+                        .image(R.drawable.property_icon)
+                        .title("Property Tax Survey")
+                        .description("App provide property tax survey")
                         .build(),
                 new MessageButtonBehaviour(new View.OnClickListener() {
                     @Override
@@ -83,7 +83,9 @@ public class LoginIntroActivity extends MaterialIntroActivity implements LoaderM
                             //open new activity
                         }
                     }
-                }, "Login"));
+                },  firebaseAuth.getCurrentUser() != null ? getString(R.string.enter) : getString(R.string.login)));
+
+        enableLastSlideAlphaExitTransition(true);
     }
 
     public void initGSignInstace(){
