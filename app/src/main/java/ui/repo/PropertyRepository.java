@@ -1,5 +1,6 @@
 package ui.repo;
 
+import android.location.Location;
 import android.support.annotation.NonNull;
 
 import java.util.List;

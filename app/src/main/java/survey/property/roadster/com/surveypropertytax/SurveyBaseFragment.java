@@ -6,11 +6,15 @@ import android.support.annotation.CallSuper;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import javax.inject.Inject;
 
@@ -18,12 +22,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import dagger.android.support.AndroidSupportInjection;
 import dagger.android.support.DaggerFragment;
+import ui.LocationUtil.LocationHelper;
 
-public abstract class SurveyBaseFragment<P, T extends BaseIntranction> extends DaggerFragment {
+public abstract class SurveyBaseFragment<P, T extends BaseIntranction> extends DaggerFragment{
 
     @Inject
     protected P mPresenter;
-
 
     private T mListener;
 
@@ -74,7 +78,6 @@ public abstract class SurveyBaseFragment<P, T extends BaseIntranction> extends D
     public abstract void initLayout();
 
     public void postInit(){
-
     }
 
     @Override

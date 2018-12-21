@@ -1,8 +1,11 @@
 package ui.data;
 
+import android.graphics.Bitmap;
 import android.location.Location;
 
 import java.io.Serializable;
+
+import ui.LocationUtil.LocationHelper;
 
 public class PropertyDto implements Serializable {
     long propertyId;
@@ -13,6 +16,8 @@ public class PropertyDto implements Serializable {
     String longitude;
     String urlSignature;
     String urlPropertyImage;
+    private Bitmap singatureBitmap;
+    private Bitmap photoBitmap;
 
     public PropertyDto(long propertyId, String propertyName, String contactNo,String latitude, String longitude, String urlSignature, String urlPropertyImage) {
         this.propertyId = propertyId;
@@ -22,7 +27,7 @@ public class PropertyDto implements Serializable {
         this.longitude = longitude;
         this.urlSignature = urlSignature;
         this.urlPropertyImage = urlPropertyImage;
-        this.distance = calculateDistance();
+        this.distance = 0;
     }
 
     public String getPropertyName() {
@@ -89,10 +94,19 @@ public class PropertyDto implements Serializable {
         this.urlPropertyImage = urlPropertyImage;
     }
 
-    private int calculateDistance(){
-        Location l2 = new Location(("end"));
-        l2.setLatitude(Double.valueOf(latitude));
-        l2.setLongitude(Double.valueOf(longitude));
-        return 12;//(int) new Location("start").distanceTo(l2);
+    public void setSingatureBitmap(Bitmap singatureBitmap) {
+        this.singatureBitmap = singatureBitmap;
+    }
+
+    public void setPhotoBitmap(Bitmap photoBitmap) {
+        this.photoBitmap = photoBitmap;
+    }
+
+    public Bitmap getSingatureBitmap() {
+        return singatureBitmap;
+    }
+
+    public Bitmap getPhotoBitmap() {
+        return photoBitmap;
     }
 }

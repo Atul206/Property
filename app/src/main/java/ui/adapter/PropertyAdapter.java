@@ -1,6 +1,7 @@
 package ui.adapter;
 
 import android.content.Context;
+import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
@@ -15,12 +16,14 @@ import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
 import survey.property.roadster.com.surveypropertytax.R;
+import ui.LocationUtil.LocationHelper;
 import ui.data.PropertyData;
 import ui.data.PropertyDto;
 
 public class PropertyAdapter extends  LoadingAdapter<PropertyData, PropertyAdapter.PropertyViewHolder> {
 
 
+    private Location mLastLocation;
     @Inject
     public PropertyAdapter(Context context, AdapterClickCallback<PropertyData> callback) {
         super(context, callback);
@@ -68,13 +71,25 @@ public class PropertyAdapter extends  LoadingAdapter<PropertyData, PropertyAdapt
         public void holdData(int position){
             PropertyDto item = data.getItem().get(position);
             if(item != null && item instanceof PropertyDto) {
-                propertyDistance.setText(String.valueOf(item.getDistance()));
-                propertyName.setText(item.getPropertyName());
-                propertyId.setText(String.valueOf(item.getPropertyId()));
+                propertyDistance.setText(context.getString(R.string.distance) + " " + String.valueOf(calculateDistance(item) + " Km"));
+                propertyName.setText(context.getString(R.string.name) + " " +item.getPropertyName());
+                propertyId.setText(context.getString(R.string.property_id) + " " +String.valueOf(item.getPropertyId()));
 
                 mainLayout.setOnClickListener(__ -> {
                     callback.onAdapterItemClick(position, data);
                 });
+            }
+        }
+
+        private int calculateDistance(PropertyDto propertyDto){
+            if(LocationHelper.getlocation() != null) {
+                mLastLocation = LocationHelper.getlocation();
+                Location l2 = new Location(("end"));
+                l2.setLatitude(Double.valueOf(propertyDto.getLatitude()));
+                l2.setLongitude(Double.valueOf(propertyDto.getLongitude()));
+                return (int) (mLastLocation.distanceTo(l2)/1000);
+            }else{
+                return 0;
             }
         }
     }

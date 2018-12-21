@@ -8,16 +8,26 @@
     android:padding="5dp"
     android:background="@android:color/white">
 
+    <ImageView
+        android:id="@+id/icon"
+        app:layout_constraintTop_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="parent"
+        android:layout_marginLeft="5dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:src="@drawable/item_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <TextView
         android:layout_marginTop="5sp"
-        android:layout_marginLeft="5sp"
+        android:layout_marginLeft="10sp"
         android:id="@+id/property_id"
-        android:text="Property id: 121231221312"
+        android:text="@string/property_id"
         android:textSize="18sp"
         android:textColor="@color/colorPrimaryDark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"/>
+        app:layout_constraintLeft_toRightOf="@id/icon"/>
 
     <TextView
         android:layout_marginTop="5sp"
@@ -26,7 +36,7 @@
         android:textSize="16sp"
         android:id="@+id/property_distance"
         android:textColor="@color/colorPrimaryDark"
-        android:text="1 Km"
+        android:text="@string/distance"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
@@ -39,10 +49,10 @@
         android:textSize="16sp"
         android:id="@+id/property_name"
         android:textColor="@color/colorPrimaryDark"
-        android:text="Roy property and villa"
-        android:layout_marginLeft="5sp"
+        android:text="@string/name"
+        app:layout_constraintLeft_toRightOf="@id/icon"
+        android:layout_marginLeft="10sp"
         app:layout_constraintTop_toBottomOf="@id/property_id"
-        app:layout_constraintLeft_toLeftOf="parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

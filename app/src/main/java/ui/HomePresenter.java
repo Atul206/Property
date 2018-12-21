@@ -1,7 +1,9 @@
 package ui;
 
 import android.annotation.SuppressLint;
+import android.location.Location;
 
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -11,6 +13,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.subjects.PublishSubject;
 import survey.property.roadster.com.surveypropertytax.BasePresenter;
 import survey.property.roadster.com.surveypropertytax.db.PropertyDbObject;
+import ui.LocationUtil.LocationHelper;
 import ui.data.PropertyData;
 import ui.repo.PropertyRepository;
 
@@ -52,11 +55,12 @@ public class HomePresenter extends BasePresenter<HomeView> {
     }
 
     public void generateData() {
-        propertyRepository.insert(new PropertyDbObject(1l,"8447648832", "Laxman villa", "27.2428", "72.2342",null,null ));
+        propertyRepository.insert(new PropertyDbObject((long) new Random().nextInt(),"Laxman villa", "8527644463", "27.2428", "72.2342",null,null ));
     }
 
     @Override
     public void finish() {
         super.finish();
     }
+
 }

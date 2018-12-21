@@ -1,5 +1,6 @@
 package ui.fragment;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +18,7 @@ import di.FragmentScope;
 import io.reactivex.subjects.PublishSubject;
 import survey.property.roadster.com.surveypropertytax.BaseIntranction;
 import survey.property.roadster.com.surveypropertytax.R;
+import survey.property.roadster.com.surveypropertytax.SurveyBaseActivity;
 import survey.property.roadster.com.surveypropertytax.SurveyBaseFragment;
 import ui.HomePresenter;
 import ui.HomeView;
@@ -36,7 +38,6 @@ public class HomeFragment extends SurveyBaseFragment<HomePresenter, HomeFragment
     @Inject
     protected PropertyAdapter adapter;
 
-
     @Inject
     StorageReference storageReference;
 
@@ -52,8 +53,6 @@ public class HomeFragment extends SurveyBaseFragment<HomePresenter, HomeFragment
     @Override
     public void preInit() {
         super.preInit();
-        //Bundle bundle = getArguments();
-        //bundle.getString(R.string)
     }
 
     @Override
@@ -131,5 +130,10 @@ public class HomeFragment extends SurveyBaseFragment<HomePresenter, HomeFragment
     public void onDestroyView() {
         mPresenter.finish();
         super.onDestroyView();
+    }
+
+    public static HomeFragment newInstance(){
+        HomeFragment fragment = new HomeFragment();
+        return fragment;
     }
 }

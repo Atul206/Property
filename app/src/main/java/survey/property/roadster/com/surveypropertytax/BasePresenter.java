@@ -1,5 +1,6 @@
 package survey.property.roadster.com.surveypropertytax;
 
+import android.location.Location;
 import android.support.annotation.NonNull;
 
 import javax.inject.Inject;
@@ -7,6 +8,7 @@ import javax.inject.Inject;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import survey.property.roadster.com.surveypropertytax.db.PropertyLoadDao;
+import ui.LocationUtil.LocationHelper;
 
 public class BasePresenter<T extends BaseView> {
 
