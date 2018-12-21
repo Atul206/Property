@@ -7,15 +7,21 @@ import java.io.Serializable;
 public class PropertyDto implements Serializable {
     long propertyId;
     String propertyName;
+    String contactNo;
     int distance;
     String latitude;
     String longitude;
+    String urlSignature;
+    String urlPropertyImage;
 
-    public PropertyDto(long propertyId, String propertyName,String latitude, String longitude) {
+    public PropertyDto(long propertyId, String propertyName, String contactNo,String latitude, String longitude, String urlSignature, String urlPropertyImage) {
         this.propertyId = propertyId;
         this.propertyName = propertyName;
+        this.contactNo = contactNo;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.urlSignature = urlSignature;
+        this.urlPropertyImage = urlPropertyImage;
         this.distance = calculateDistance();
     }
 
@@ -41,6 +47,46 @@ public class PropertyDto implements Serializable {
 
     public void setDistance(int distance) {
         this.distance = distance;
+    }
+
+    public String getContactNo() {
+        return contactNo;
+    }
+
+    public void setContactNo(String contactNo) {
+        this.contactNo = contactNo;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getUrlSignature() {
+        return urlSignature;
+    }
+
+    public void setUrlSignature(String urlSignature) {
+        this.urlSignature = urlSignature;
+    }
+
+    public String getUrlPropertyImage() {
+        return urlPropertyImage;
+    }
+
+    public void setUrlPropertyImage(String urlPropertyImage) {
+        this.urlPropertyImage = urlPropertyImage;
     }
 
     private int calculateDistance(){

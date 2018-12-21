@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
@@ -28,12 +29,17 @@ import android.widget.Toast;
 import com.github.gcacace.signaturepad.views.SignaturePad;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -44,7 +50,6 @@ import survey.property.roadster.com.surveypropertytax.SurveyBaseFragment;
 import ui.FormPresenter;
 import ui.FormView;
 import ui.LocationUtil.LocationHelper;
-import ui.LocationUtil.PermissionUtils;
 import ui.data.PropertyDto;
 
 import static android.app.Activity.RESULT_OK;
@@ -52,7 +57,7 @@ import static android.app.Activity.RESULT_OK;
 @FragmentScope
 public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment.LoginIntraction>
         implements FormView, GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,ActivityCompat.OnRequestPermissionsResultCallback {
+        GoogleApiClient.OnConnectionFailedListener, ActivityCompat.OnRequestPermissionsResultCallback {
 
     @BindView(R.id.signaturePad)
     SignaturePad signaturePad;
@@ -83,6 +88,9 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
 
     LocationHelper locationHelper;
 
+    @Inject
+    StorageReference storageReference;
+
 
     @Override
     public void preInit() {
@@ -103,10 +111,10 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
             @Override
             public void onSigned() {
                 //Event triggered when the pad is signed
-               Bitmap bitmap = signaturePad.getSignatureBitmap();
-               if (bitmap!=null){
-                   Toast.makeText(getActivity(),"Signature captured",Toast.LENGTH_LONG).show();
-               }
+                Bitmap bitmap = signaturePad.getSignatureBitmap();
+                if (bitmap != null) {
+                    Toast.makeText(getActivity(), "Signature captured", Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
@@ -119,13 +127,13 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
     @Override
     public void postInit() {
         super.postInit();
-        locationHelper=new LocationHelper(getContext());
+        locationHelper = new LocationHelper(getContext());
         locationHelper.checkpermission();
         // check availability of play services
         if (locationHelper.checkPlayServices()) {
 
             // Building the GoogleApi client
-            locationHelper.buildGoogleApiClient(this,this);
+            locationHelper.buildGoogleApiClient(this, this);
         }
     }
 
@@ -152,7 +160,7 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         // Once connected with google api, get the location
-        mLastLocation=locationHelper.getLocation();
+        mLastLocation = locationHelper.getLocation();
     }
 
     @Override
@@ -171,7 +179,7 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         // redirects to utils
-        locationHelper.onRequestPermissionsResult(requestCode,permissions,grantResults);
+        locationHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
     }
 
@@ -187,7 +195,7 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
 
     @OnClick(R.id.btn_save_form)
     public void submitForm() {
-        mLastLocation=locationHelper.getLocation();
+        mLastLocation = locationHelper.getLocation();
 
         if (mLastLocation != null) {
             latitude = mLastLocation.getLatitude();
@@ -195,12 +203,67 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
             showToast("latitude : " + String.valueOf(latitude) + " longitide : " + String.valueOf(longitude));
         } else {
 
-        if(btnSaveForm.isEnabled())
-            btnSaveForm.setEnabled(false);
+            if (btnSaveForm.isEnabled())
+                btnSaveForm.setEnabled(false);
 
-        showToast("Couldn't get the location. Make sure location is enabled on the device");
+            showToast("Couldn't get the location. Make sure location is enabled on the device");
+        }
+
+        uploadSignature();
+        uploadPropertyPic();
     }
 
+    private void uploadPropertyPic() {
+        StorageReference propertyImagesRef = storageReference.child("images/signatures/sample.jpg");
+
+        Bitmap bitmap = signaturePad.getSignatureBitmap();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        UploadTask uploadTask = propertyImagesRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+                Log.i("PIC",exception.getMessage());
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                // ...
+                Log.i("PIC",taskSnapshot.getMetadata().getPath());
+            }
+        });
+    }
+
+    private void uploadSignature() {
+        StorageReference signatureImagesRef = storageReference.child("images/signatures/sample.jpg");
+
+
+        imageView.setDrawingCacheEnabled(true);
+        imageView.buildDrawingCache();
+        Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        UploadTask uploadTask = signatureImagesRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+                Log.i("PIC",exception.getMessage());
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                // ...
+                Log.i("PIC",taskSnapshot.getMetadata().getPath());
+            }
+        });
     }
 
     @OnClick(R.id.btn_take_image)
@@ -210,7 +273,7 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
         View view = getLayoutInflater().inflate(R.layout.dialog_take_pic, null);
         builder.setCustomTitle(view);
         builder.setItems(items, (dialog, item) -> {
-            fileUri = getOutputMediaFileUri("identifier",getActivity());
+            fileUri = getOutputMediaFileUri("identifier", getActivity());
             if (items[item].equals("Take photo")) {
                 openCamera(fileUri); // Fire Camera Intent
             } else if (items[item].equals("Pic from gallery")) {
@@ -260,7 +323,7 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
     public Uri getOutputMediaFileUri(String identifier, Context context) {
         File file = getOutputMediaFile(identifier);
         if (file != null)
-            if(Build.VERSION.SDK_INT < 24) {
+            if (Build.VERSION.SDK_INT < 24) {
                 return Uri.fromFile(file);
             } else {
                 return FileProvider.getUriForFile(
@@ -314,7 +377,7 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
             if (data != null) {
 //                setDocImage(data.getData());
             }
-        } else  locationHelper.onActivityResult(requestCode,resultCode,data);
+        } else locationHelper.onActivityResult(requestCode, resultCode, data);
     }
 
     private void setDocImage() {
@@ -323,8 +386,8 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
     }
 
     private void setLayoutWithPODImage(File actualImageFile) {
-        if(actualImageFile == null) {
-            Toast.makeText(getActivity(),"Cannot upload picture from this resource currently!",Toast.LENGTH_LONG).show();
+        if (actualImageFile == null) {
+            Toast.makeText(getActivity(), "Cannot upload picture from this resource currently!", Toast.LENGTH_LONG).show();
             return;
         }
         Bitmap demo = getBitmapFromFile(actualImageFile.getPath(), THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT);
@@ -346,7 +409,7 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
         try {
             BitmapFactory.decodeStream(new FileInputStream(new File(bitmapFilePath)), null, options);
         } catch (FileNotFoundException e) {
-            Log.e("DEBUG",e.getMessage());
+            Log.e("DEBUG", e.getMessage());
         }
 
         int scale = calculateInSampleSize(options, reqWidth, reqHeight);
@@ -357,7 +420,7 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
         try {
             return BitmapFactory.decodeStream(new FileInputStream(new File(bitmapFilePath)), null, o2);
         } catch (FileNotFoundException e) {
-            Log.e("DEBUG",e.getMessage());
+            Log.e("DEBUG", e.getMessage());
             return null;
         }
     }
@@ -385,7 +448,7 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
         return inSampleSize;
     }
 
-    public void showToast(String message){
-        Toast.makeText(getActivity(),message,Toast.LENGTH_SHORT).show();
+    public void showToast(String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 }

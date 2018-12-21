@@ -52,7 +52,7 @@ public class HomePresenter extends BasePresenter<HomeView> {
     }
 
     public void generateData() {
-        propertyRepository.insert(new PropertyDbObject(1l, "Laxman villa", "27.2428", "72.2342" ));
+        propertyRepository.insert(new PropertyDbObject(1l,"8447648832", "Laxman villa", "27.2428", "72.2342",null,null ));
     }
 
     @Override

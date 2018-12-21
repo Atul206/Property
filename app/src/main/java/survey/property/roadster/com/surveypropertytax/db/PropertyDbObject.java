@@ -5,6 +5,7 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.Keep;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.google.android.gms.common.annotation.KeepName;
 
@@ -25,6 +26,10 @@ public class PropertyDbObject {
     private String propertyName;
 
     @NonNull
+    @ColumnInfo(name = "contact_no")
+    private String contactNo;
+
+    @NonNull
     @ColumnInfo(name = "latitude")
     private String latitude;
 
@@ -32,11 +37,20 @@ public class PropertyDbObject {
     @ColumnInfo(name = "longitude")
     private String longitude;
 
-    public PropertyDbObject(@NonNull Long propertyId, @NonNull String propertyName, @NonNull String latitude, @NonNull String longitude) {
+    @ColumnInfo(name = "url_signature")
+    private String urlSignature;
+
+    @ColumnInfo(name = "url_property_image")
+    private String urlPropertyImage;
+
+    public PropertyDbObject(@NonNull Long propertyId, @NonNull String propertyName, @NonNull String contactNo, @NonNull String latitude, @NonNull String longitude, String urlSignature,String urlPropertyImage) {
         this.propertyId = propertyId;
         this.propertyName = propertyName;
+        this.contactNo = contactNo;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.urlSignature =  urlSignature;
+        this.urlPropertyImage = urlPropertyImage;
     }
 
     @NonNull
@@ -55,6 +69,11 @@ public class PropertyDbObject {
     }
 
     @NonNull
+    public String getContactNo() {
+        return contactNo;
+    }
+
+    @NonNull
     public String getLatitude() {
         return latitude;
     }
@@ -62,6 +81,16 @@ public class PropertyDbObject {
     @NonNull
     public String getLongitude() {
         return longitude;
+    }
+
+    @NonNull
+    public String getUrlSignature() {
+        return urlSignature;
+    }
+
+    @NonNull
+    public String getUrlPropertyImage() {
+        return urlPropertyImage;
     }
 
     public void setUid(int uid) {
@@ -76,11 +105,23 @@ public class PropertyDbObject {
         this.propertyName = propertyName;
     }
 
+    public void setContactNo(@NonNull String contactNo) {
+        this.contactNo = contactNo;
+    }
+
     public void setLatitude(@NonNull String latitude) {
         this.latitude = latitude;
     }
 
     public void setLongitude(@NonNull String longitude) {
         this.longitude = longitude;
+    }
+
+    public void setUrlSignature(@NonNull String urlSignature) {
+        this.urlSignature = urlSignature;
+    }
+
+    public void setUrlPropertyImage(@NonNull String urlPropertyImage) {
+        this.urlPropertyImage = urlPropertyImage;
     }
 }

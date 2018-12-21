@@ -13,8 +13,9 @@
         <item name="android:layout_gravity">center_vertical</item>
     </style>
 
-    <style name="TextForValue" parent="Base.V7.Widget.AppCompat.EditText">
+    <style name="TextForValue">
         <item name="android:background">@drawable/boundary_round_corner</item>
+        <item name="android:padding">2dp</item>
         <item name="android:textSize">16dp</item>
         <item name="android:layout_gravity">fill_horizontal|center_vertical</item>
     </style>

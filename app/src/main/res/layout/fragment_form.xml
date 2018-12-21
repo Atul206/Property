@@ -30,6 +30,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="Enter name"
+                android:inputType="textNoSuggestions"
+                android:singleLine="true"
+                android:imeOptions="actionNext"
                 android:textColor="@color/colorPrimaryDark" />
 
             <TextView
@@ -47,6 +50,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:hint="Enter contact no"
+                android:inputType="phone"
+                android:maxLength="10"
+                android:singleLine="true"
+                android:imeOptions="actionDone"
                 android:textColor="@color/colorPrimaryDark" />
 
             <TextView
