@@ -9,6 +9,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -34,6 +35,7 @@ public class LocationHelper implements PermissionUtils.PermissionResultCallback{
 
     private Context context;
     private Activity current_activity;
+
 
     private boolean isPermissionGranted;
 
@@ -148,10 +150,11 @@ public class LocationHelper implements PermissionUtils.PermissionResultCallback{
      * Method used to build GoogleApiClient
      */
 
-    public void buildGoogleApiClient() {
+    public void buildGoogleApiClient(GoogleApiClient.ConnectionCallbacks connectionCallbacks,
+                                     GoogleApiClient.OnConnectionFailedListener onConnectionFailedListener) {
         mGoogleApiClient = new GoogleApiClient.Builder(context)
-                .addConnectionCallbacks((GoogleApiClient.ConnectionCallbacks) current_activity)
-                .addOnConnectionFailedListener((GoogleApiClient.OnConnectionFailedListener) current_activity)
+                .addConnectionCallbacks(connectionCallbacks)
+                .addOnConnectionFailedListener(onConnectionFailedListener)
                 .addApi(LocationServices.API).build();
 
         mGoogleApiClient.connect();

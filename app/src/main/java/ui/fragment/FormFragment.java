@@ -6,24 +6,34 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.github.gcacace.signaturepad.views.SignaturePad;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -33,18 +43,27 @@ import survey.property.roadster.com.surveypropertytax.R;
 import survey.property.roadster.com.surveypropertytax.SurveyBaseFragment;
 import ui.FormPresenter;
 import ui.FormView;
+import ui.LocationUtil.LocationHelper;
+import ui.LocationUtil.PermissionUtils;
 import ui.data.PropertyDto;
 
 import static android.app.Activity.RESULT_OK;
 
 @FragmentScope
 public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment.LoginIntraction>
-        implements FormView {
+        implements FormView, GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,ActivityCompat.OnRequestPermissionsResultCallback {
 
     @BindView(R.id.signaturePad)
     SignaturePad signaturePad;
     @BindView(R.id.image_view)
     ImageView imageView;
+    @BindView(R.id.edit_property_name)
+    EditText editPropertyName;
+    @BindView(R.id.edit_property_contact_no)
+    EditText editPropertyContactNo;
+    @BindView(R.id.btn_save_form)
+    Button btnSaveForm;
 
     public static String SURVEY_PIC = "survey_pic";
     public static final int REQUEST_CAMERA = 1;
@@ -56,6 +75,13 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
 
     private static final int THUMBNAIL_WIDTH = 400;
     private static final int THUMBNAIL_HEIGHT = 150;
+
+    private Location mLastLocation;
+
+    double latitude;
+    double longitude;
+
+    LocationHelper locationHelper;
 
 
     @Override
@@ -93,6 +119,14 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
     @Override
     public void postInit() {
         super.postInit();
+        locationHelper=new LocationHelper(getContext());
+        locationHelper.checkpermission();
+        // check availability of play services
+        if (locationHelper.checkPlayServices()) {
+
+            // Building the GoogleApi client
+            locationHelper.buildGoogleApiClient(this,this);
+        }
     }
 
     @Override
@@ -115,6 +149,32 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
         return null;
     }
 
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        // Once connected with google api, get the location
+        mLastLocation=locationHelper.getLocation();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        locationHelper.connectApiClient();
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Log.i("Connection failed:", " ConnectionResult.getErrorCode() = "
+                + connectionResult.getErrorCode());
+    }
+
+    // Permission check functions
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        // redirects to utils
+        locationHelper.onRequestPermissionsResult(requestCode,permissions,grantResults);
+
+    }
+
     public interface LoginIntraction extends BaseIntranction {
         void gotoFormFragment(PropertyDto data);
     }
@@ -123,6 +183,24 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
     public void onDestroyView() {
         mPresenter.finish();
         super.onDestroyView();
+    }
+
+    @OnClick(R.id.btn_save_form)
+    public void submitForm() {
+        mLastLocation=locationHelper.getLocation();
+
+        if (mLastLocation != null) {
+            latitude = mLastLocation.getLatitude();
+            longitude = mLastLocation.getLongitude();
+            showToast("latitude : " + String.valueOf(latitude) + " longitide : " + String.valueOf(longitude));
+        } else {
+
+        if(btnSaveForm.isEnabled())
+            btnSaveForm.setEnabled(false);
+
+        showToast("Couldn't get the location. Make sure location is enabled on the device");
+    }
+
     }
 
     @OnClick(R.id.btn_take_image)
@@ -172,10 +250,10 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
             if (fileUri != null)
                 startActivityForResult(intent, 100);
             else
-                Toast.makeText(getActivity(), "Some issues with storage, try deleting some items from memory.", Toast.LENGTH_LONG).show();
+                showToast("Some issues with storage, try deleting some items from memory.");
 
         } else {
-            Toast.makeText(getActivity(), "Camera not supported", Toast.LENGTH_SHORT).show();
+            showToast("Camera not supported");
         }
     }
 
@@ -236,7 +314,7 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
             if (data != null) {
 //                setDocImage(data.getData());
             }
-        }
+        } else  locationHelper.onActivityResult(requestCode,resultCode,data);
     }
 
     private void setDocImage() {
@@ -305,5 +383,9 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
         }
 
         return inSampleSize;
+    }
+
+    public void showToast(String message){
+        Toast.makeText(getActivity(),message,Toast.LENGTH_SHORT).show();
     }
 }

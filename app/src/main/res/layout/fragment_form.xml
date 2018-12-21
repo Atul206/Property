@@ -1,122 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    android:padding="16dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="16dp">
 
-
-    <GridLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:columnCount="2">
-        <TextView
-            android:layout_width="100dp"
+        android:layout_height="wrap_content">
+
+
+        <GridLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Name"
-            style="@style/TextForKey"
-            android:textColor="@color/colorPrimaryDark" />
+            android:columnCount="2">
 
-        <EditText
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="enter naem"
-            style="@style/TextForValue"
-            android:textColor="@color/colorPrimaryDark" />
+            <TextView
+                style="@style/TextForKey"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:textColor="@color/colorPrimaryDark" />
 
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="Name"
-            style="@style/TextForKey"
-            android:textColor="@color/colorPrimaryDark" />
+            <EditText
+                android:id="@+id/edit_property_name"
+                style="@style/TextForValue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Enter name"
+                android:textColor="@color/colorPrimaryDark" />
 
-        <EditText
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="enter naem"
-            style="@style/TextForValue"
-            android:textColor="@color/colorPrimaryDark" />
+            <TextView
+                style="@style/TextForKey"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Mobile No."
+                android:textColor="@color/colorPrimaryDark" />
 
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="Name"
-            style="@style/TextForKey"
-            android:textColor="@color/colorPrimaryDark" />
+            <EditText
+                android:id="@+id/edit_property_contact_no"
+                style="@style/TextForValue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:hint="Enter contact no"
+                android:textColor="@color/colorPrimaryDark" />
 
-        <EditText
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="enter naem"
-            style="@style/TextForValue"
-            android:textColor="@color/colorPrimaryDark" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_columnSpan="2"
+                android:layout_gravity="fill_horizontal|center"
+                android:layout_marginTop="12dp"
+                android:text="Mark your signature"
+                android:textColor="@color/colorPrimaryDark" />
 
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="Name"
-            style="@style/TextForKey"
-            android:textColor="@color/colorPrimaryDark" />
+            <com.github.gcacace.signaturepad.views.SignaturePad
+                android:id="@+id/signaturePad"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_columnSpan="2"
+                android:layout_gravity="fill_horizontal|center"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/boundary_round_corner" />
 
-        <EditText
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="enter naem"
-            style="@style/TextForValue"
-            android:textColor="@color/colorPrimaryDark" />
+            <Button
+                android:layout_width="0dp"
+                android:layout_columnSpan="2"
+                android:layout_gravity="fill_horizontal|center"
+                android:text="clear"
+                android:textColor="@android:color/white" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_columnSpan="2"
-            android:layout_gravity="fill_horizontal|center"
-            android:text="Mark your signature"
-            android:textColor="@color/colorPrimaryDark"
-            />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_columnSpan="2"
+                android:layout_gravity="fill_horizontal|center"
+                android:layout_marginTop="12dp"
+                android:text="Take photo"
+                android:textColor="@color/colorPrimaryDark" />
 
-        <com.github.gcacace.signaturepad.views.SignaturePad
-            android:id="@+id/signaturePad"
-            android:layout_width="0dp"
-            android:layout_columnSpan="2"
-            android:layout_gravity="fill_horizontal|center"
-            android:background="@drawable/boundary_round_corner"
-            android:layout_height="100dp"/>
+            <ImageView
+                android:id="@+id/image_view"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_columnSpan="2"
+                android:layout_gravity="fill_horizontal|center"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/boundary_round_corner" />
 
-        <Button
-            android:layout_width="0dp"
-            android:layout_gravity="fill_horizontal|center"
-            android:textColor="@android:color/white"
-            android:text="clear"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_columnSpan="2"
-            android:layout_gravity="fill_horizontal|center"
-            android:text="Take photo"
-            android:textColor="@color/colorPrimaryDark"
-            />
-
-        <ImageView
-            android:id="@+id/image_view"
-            android:layout_width="0dp"
-            android:layout_columnSpan="2"
-            android:layout_gravity="fill_horizontal|center"
-            android:background="@drawable/boundary_round_corner"
-            android:layout_height="100dp"/>
-
-        <Button
-            android:id="@+id/btn_take_image"
-            android:layout_width="120dp"
-            android:layout_gravity="fill_horizontal|center"
-            android:textColor="@android:color/white"
-            android:text="TAKE IMAGE"/>
+            <Button
+                android:id="@+id/btn_take_image"
+                android:layout_width="120dp"
+                android:layout_columnSpan="2"
+                android:layout_gravity="fill_horizontal|center"
+                android:text="TAKE IMAGE"
+                android:textColor="@android:color/white" />
 
 
+            <Button
+                android:id="@+id/btn_save_form"
+                android:layout_width="120dp"
+                android:layout_columnSpan="2"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="18dp"
+                android:text="SUBMIT"
+                android:textColor="@android:color/white" />
 
-    </GridLayout>
+
+        </GridLayout>
+
+    </ScrollView>
 
 
 </LinearLayout>
