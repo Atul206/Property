@@ -210,6 +210,7 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
     public void navigate(){
         if (TextUtils.isEmpty(mPresenter.getPropertyData().getLatitude()) || TextUtils.isEmpty(mPresenter.getPropertyData().getLongitude())) {
             Toast.makeText(getActivity(),"Sorry can't navigate.Location of the property not defined!",Toast.LENGTH_LONG).show();
+            return;
         }
         String uriString = "http://maps.google.com/maps?daddr=" + mPresenter.getPropertyData().getLatitude() + "," + mPresenter.getPropertyData().getLongitude();
         Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
