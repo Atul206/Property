@@ -19,7 +19,11 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -83,6 +87,31 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
     @Inject
     StorageReference storageReference;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_navigate, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case R.id.menu_navigate:
+                navigate();
+                return true;
+            default:
+                break;
+        }
+
+        return false;
+    }
 
     @Override
     public void preInit() {
@@ -176,6 +205,16 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
         imageView.buildDrawingCache();
         mPresenter.registerOfflineFile();
         getActivity().onBackPressed();
+    }
+
+    public void navigate(){
+        if (TextUtils.isEmpty(mPresenter.getPropertyData().getLatitude()) || TextUtils.isEmpty(mPresenter.getPropertyData().getLongitude())) {
+            Toast.makeText(getActivity(),"Sorry can't navigate.Location of the property not defined!",Toast.LENGTH_LONG).show();
+        }
+        String uriString = "http://maps.google.com/maps?daddr=" + mPresenter.getPropertyData().getLatitude() + "," + mPresenter.getPropertyData().getLongitude();
+        Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                Uri.parse(uriString));
+        startActivity(intent);
     }
 
     @OnClick(R.id.btn_take_image)
