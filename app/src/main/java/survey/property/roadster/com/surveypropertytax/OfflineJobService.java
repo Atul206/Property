@@ -21,8 +21,6 @@ import javax.inject.Inject;
 import ui.data.DetailDto;
 import ui.data.PropertyDto;
 
-import static android.support.constraint.Constraints.TAG;
-
 public class OfflineJobService  extends JobService {
 
     @Inject
@@ -31,16 +29,19 @@ public class OfflineJobService  extends JobService {
     @Inject
     DatabaseReference databaseReference;
 
+    @Inject
+    PApplication pApp;
+
     private static final String TAG = OfflineJobService.class.getSimpleName();
 
     @Override
     public boolean onStartJob(JobParameters job) {
         if(CommonUtil.isNetworkAvailable(this)){
-            List<PropertyDto> propertyDtos = PApplication.getInstance().getPropertyDtos();
+            List<PropertyDto> propertyDtos = pApp.getPropertyDtos();
             for(PropertyDto p:propertyDtos){
                 uploadPropertyPicture(p);
                 uploadPropertyPicture(p);
-                PApplication.getInstance().removeOfflinePropertyItem(p);
+                pApp.removeOfflinePropertyItem(p);
             }
             Log.d(TAG, "Job Started and call every 15 min duration");
         }else{

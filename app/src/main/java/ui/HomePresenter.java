@@ -3,15 +3,18 @@ package ui;
 import android.annotation.SuppressLint;
 import android.location.Location;
 
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.subjects.PublishSubject;
 import survey.property.roadster.com.surveypropertytax.BasePresenter;
+import survey.property.roadster.com.surveypropertytax.PApplication;
 import survey.property.roadster.com.surveypropertytax.db.PropertyDbObject;
 import ui.LocationUtil.LocationHelper;
 import ui.data.PropertyData;
@@ -55,7 +58,15 @@ public class HomePresenter extends BasePresenter<HomeView> {
     }
 
     public void generateData() {
-        propertyRepository.insert(new PropertyDbObject((long) new Random().nextInt(),"Laxman villa", "8527644463", "27.2428", "72.2342",null,null ));
+        List<PropertyDbObject> propertyDbObjectList = view.getApplicationInstance().getPropertyDbObjects();
+        if(propertyDbObjectList == null) {
+            return;
+        }
+        propertyRepository.isEmpty().delay(1000,TimeUnit.MILLISECONDS).subscribe(i -> {
+            if(i == null || i == 0){
+                propertyRepository.insertAll(view.getApplicationInstance().getPropertyDbObjects());
+            }
+        });
     }
 
     @Override

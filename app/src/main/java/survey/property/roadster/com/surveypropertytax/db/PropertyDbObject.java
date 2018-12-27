@@ -19,9 +19,8 @@ public class PropertyDbObject {
 
     @NonNull
     @ColumnInfo(name = "property_id")
-    private Long propertyId;
+    private String propertyId;
 
-    @NonNull
     @ColumnInfo(name = "name")
     private String propertyName;
 
@@ -43,7 +42,7 @@ public class PropertyDbObject {
     @ColumnInfo(name = "url_property_image")
     private String urlPropertyImage;
 
-    public PropertyDbObject(@NonNull Long propertyId, @NonNull String propertyName, @NonNull String contactNo, @NonNull String latitude, @NonNull String longitude, String urlSignature,String urlPropertyImage) {
+    public PropertyDbObject(@NonNull String propertyId, @NonNull String propertyName, @NonNull String contactNo, @NonNull String latitude, @NonNull String longitude, String urlSignature,String urlPropertyImage) {
         this.propertyId = propertyId;
         this.propertyName = propertyName;
         this.contactNo = contactNo;
@@ -59,7 +58,7 @@ public class PropertyDbObject {
     }
 
     @NonNull
-    public Long getPropertyId() {
+    public String getPropertyId() {
         return propertyId;
     }
 
@@ -97,7 +96,7 @@ public class PropertyDbObject {
         this.uid = uid;
     }
 
-    public void setPropertyId(@NonNull Long propertyId) {
+    public void setPropertyId(@NonNull String propertyId) {
         this.propertyId = propertyId;
     }
 

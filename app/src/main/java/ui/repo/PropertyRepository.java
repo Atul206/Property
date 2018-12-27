@@ -41,10 +41,22 @@ public class PropertyRepository {
                 .subscribe(() -> {});
     }
 
+    public void insertAll(List<PropertyDbObject> propertyDbObject) {
+        Completable.fromRunnable(() -> propertyLoadDao.insertAll(propertyDbObject))
+                .subscribeOn(Schedulers.io())
+                .subscribe(() -> {});
+    }
+
     public Flowable<PropertyListDto> getSearchItem(String search) {
         return propertyLoadDao.getSearchProperties(search)
                 .subscribeOn(Schedulers.io())
                 .map(PropertyListDto::new)
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Flowable<Integer> isEmpty() {
+        return propertyLoadDao.isEmpty()
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 }

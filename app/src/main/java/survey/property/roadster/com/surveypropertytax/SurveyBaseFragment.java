@@ -31,6 +31,8 @@ public abstract class SurveyBaseFragment<P, T extends BaseIntranction> extends D
 
     private T mListener;
 
+    public PApplication mApp;
+
     @CallSuper
     @Override
     public void onAttach(Context context) {
@@ -45,6 +47,8 @@ public abstract class SurveyBaseFragment<P, T extends BaseIntranction> extends D
             throw new RuntimeException(context.toString()
                     + " must implement Fragments context");
         }
+
+        mApp = (PApplication) getActivity().getApplication();
     }
 
 
@@ -96,8 +100,15 @@ public abstract class SurveyBaseFragment<P, T extends BaseIntranction> extends D
 
     protected abstract void initListener();
 
+
+
     @NonNull
     protected T getActivityCommunicator() {
         return mListener;
+    }
+
+    @NonNull
+    public PApplication getApplicationInstance() {
+        return mApp;
     }
 }

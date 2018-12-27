@@ -118,6 +118,7 @@ public class HomeFragment extends SurveyBaseFragment<HomePresenter, HomeFragment
 
     private void onRefresh(){
         getAdapter().removeAll();
+        mPresenter.generateData();
         mPresenter.load();
         swipeRefreshLayout.setRefreshing(false);
     }

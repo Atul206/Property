@@ -8,7 +8,7 @@ import java.io.Serializable;
 import ui.LocationUtil.LocationHelper;
 
 public class PropertyDto implements Serializable {
-    long propertyId;
+    String propertyId;
     String propertyName;
     String contactNo;
     int distance;
@@ -19,7 +19,7 @@ public class PropertyDto implements Serializable {
     private Bitmap singatureBitmap;
     private Bitmap photoBitmap;
 
-    public PropertyDto(long propertyId, String propertyName, String contactNo,String latitude, String longitude, String urlSignature, String urlPropertyImage) {
+    public PropertyDto(String propertyId, String propertyName, String contactNo,String latitude, String longitude, String urlSignature, String urlPropertyImage) {
         this.propertyId = propertyId;
         this.propertyName = propertyName;
         this.contactNo = contactNo;
@@ -38,11 +38,11 @@ public class PropertyDto implements Serializable {
         this.propertyName = propertyName;
     }
 
-    public long getPropertyId() {
+    public String getPropertyId() {
         return propertyId;
     }
 
-    public void setPropertyId(long propertyId) {
+    public void setPropertyId(String propertyId) {
         this.propertyId = propertyId;
     }
 

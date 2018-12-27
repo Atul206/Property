@@ -22,7 +22,7 @@ public interface PropertyLoadDao {
     void insertAll(List<PropertyDbObject> propertyDbObjects);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertAll(PropertyDbObject... tripLoadDbObjects);
+    void insertAll(PropertyDbObject... propertyDbObjects);
 
     @Delete
     void delete(PropertyDbObject tripLoadDbObject);
@@ -32,6 +32,9 @@ public interface PropertyLoadDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(PropertyDbObject tripLoadDbObject);
+
+    @Query("SELECT count(*) from property")
+    Flowable<Integer> isEmpty();
 
     @Query("SELECT *from property where name like '%' || :arg || '%' or " +
             "property_id like '%' || :arg || '%'")

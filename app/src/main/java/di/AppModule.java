@@ -33,6 +33,10 @@ public class AppModule {
         return application;
     }
 
+    @Provides
+    @Singleton
+    PApplication pApplication(PApplication application){ return application;}
+
     @Singleton
     @Provides
     AppDatabase appDatabase(Application application) {
