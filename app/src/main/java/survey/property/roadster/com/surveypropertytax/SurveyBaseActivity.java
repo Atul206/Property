@@ -67,7 +67,7 @@ public abstract class SurveyBaseActivity extends DaggerAppCompatActivity impleme
         setUpLocation();
 
         if (savedInstanceState == null && initialFragmentClass() != null)
-            startFragment(initialFragmentClass(), true, null);
+            startFragment(initialFragmentClass(), false, null);
     }
 
     private void setUpLocation() {

@@ -21,6 +21,25 @@
                 style="@style/TextForKey"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
+                android:text="@string/property_id"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <EditText
+                android:id="@+id/edit_property_id"
+                style="@style/TextForValue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Enter name"
+                android:enabled="false"
+                android:imeOptions="actionNext"
+                android:inputType="textNoSuggestions"
+                android:singleLine="true"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <TextView
+                style="@style/TextForKey"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
                 android:text="Name"
                 android:textColor="@color/colorPrimaryDark" />
 
@@ -30,9 +49,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="Enter name"
+                android:enabled="false"
+                android:imeOptions="actionNext"
                 android:inputType="textNoSuggestions"
                 android:singleLine="true"
-                android:imeOptions="actionNext"
                 android:textColor="@color/colorPrimaryDark" />
 
             <TextView
@@ -50,11 +70,104 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:hint="Enter contact no"
+                android:imeOptions="actionDone"
                 android:inputType="phone"
                 android:maxLength="10"
                 android:singleLine="true"
-                android:imeOptions="actionDone"
                 android:textColor="@color/colorPrimaryDark" />
+
+            <TextView
+                style="@style/TextForKey"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Address."
+                android:textColor="@color/colorPrimaryDark" />
+
+            <EditText
+                android:id="@+id/edit_property_address"
+                style="@style/TextForValue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:hint="Enter contact no"
+                android:enabled="false"
+                android:imeOptions="actionDone"
+                android:inputType="textEmailAddress"
+                android:maxLength="50"
+                android:singleLine="true"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <TextView
+                style="@style/TextForKey"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Email Id."
+                android:textColor="@color/colorPrimaryDark" />
+
+            <EditText
+                android:id="@+id/edit_property_email_id"
+                style="@style/TextForValue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:hint="Enter contact no"
+                android:imeOptions="actionDone"
+                android:inputType="textEmailAddress"
+                android:maxLength="30"
+                android:singleLine="true"
+                android:textColor="@color/colorPrimaryDark" />
+
+
+            <TextView
+                style="@style/TextForKey"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Per.Address"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <EditText
+                android:id="@+id/edit_property_paddress"
+                style="@style/TextForValue"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_columnSpan="2"
+                android:gravity="top"
+                android:layout_gravity="fill_horizontal|top"
+                android:layout_marginTop="4dp"
+                android:maxLines="4"
+                android:background="@drawable/boundary_round_corner"
+                android:hint="Enter contact no"
+                android:imeOptions="actionDone"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <TextView
+                style="@style/TextForKey"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Remark"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <EditText
+                android:id="@+id/edit_property_remark"
+                style="@style/TextForValue"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_columnSpan="2"
+                android:gravity="top"
+                android:layout_gravity="fill_horizontal|top"
+                android:layout_marginTop="4dp"
+                android:maxLines="4"
+                android:background="@drawable/boundary_round_corner"
+                android:hint="Enter contact no"
+                android:imeOptions="actionDone"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/colorPrimaryDark" />
+
 
             <TextView
                 android:layout_width="0dp"

@@ -78,5 +78,15 @@
 
     <include layout="@layout/property_bottomsheet" />
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:src="@drawable/ic_qrcode"
+        android:layout_margin="16dp"
+        app:fabSize="normal"
+        app:backgroundTint="@color/colorPrimaryDark"/>
+
 
 </android.support.design.widget.CoordinatorLayout>

@@ -6,6 +6,8 @@ import survey.property.roadster.com.surveypropertytax.BasePresenter;
 import ui.ActionPresenter;
 import ui.FormPresenter;
 import ui.HomePresenter;
+import ui.ScanPresenter;
+import ui.fragment.PropertyScanFragment;
 
 @Module
 public abstract class HomeBasePresenterModule {
@@ -14,8 +16,11 @@ public abstract class HomeBasePresenterModule {
     abstract BasePresenter homeBasePresenter(HomePresenter homePresenter);
 
     @Binds
-    abstract BasePresenter formBasePresenter(FormPresenter homePresenter);
+    abstract BasePresenter formBasePresenter(FormPresenter formPresenter);
 
     @Binds
     abstract BasePresenter actionPresenter(ActionPresenter actionPresenter);
+
+    @Binds
+    abstract BasePresenter scanPresenter(ScanPresenter scanPresenter);
 }

@@ -1,7 +1,9 @@
 package ui.fragment;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +11,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.google.firebase.storage.StorageReference;
+import com.google.zxing.qrcode.encoder.QRCode;
 
 import java.util.List;
 
@@ -16,12 +19,15 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import butterknife.OnTextChanged;
+import dagger.Binds;
 import di.FragmentScope;
 import io.reactivex.subjects.PublishSubject;
 import survey.property.roadster.com.surveypropertytax.BaseIntranction;
 import survey.property.roadster.com.surveypropertytax.R;
 import survey.property.roadster.com.surveypropertytax.SurveyBaseFragment;
+import ui.HomeActivity;
 import ui.HomePresenter;
 import ui.HomeView;
 import ui.adapter.LoadingAdapter;
@@ -33,6 +39,9 @@ import ui.data.PropertyDto;
 public class HomeFragment extends SurveyBaseFragment<HomePresenter, HomeFragment.LoginIntraction>
         implements LoadingAdapter.AdapterClickCallback<PropertyData>, HomeView{
 
+
+    private static final String QR_CODE_STR = "qr_code_search";
+
     @Inject
     @Named("propertySearchString")
     public PublishSubject<String> textSearchObservable;
@@ -42,6 +51,10 @@ public class HomeFragment extends SurveyBaseFragment<HomePresenter, HomeFragment
 
     @Inject
     StorageReference storageReference;
+
+
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
 
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
@@ -56,11 +69,16 @@ public class HomeFragment extends SurveyBaseFragment<HomePresenter, HomeFragment
     LinearLayout bottomSheet;
 
     private BottomSheetBehavior bottomSheetBehavior;
+    private String qrCode;
 
     @Override
     public void preInit() {
         super.preInit();
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
     }
 
     @Override
@@ -68,11 +86,26 @@ public class HomeFragment extends SurveyBaseFragment<HomePresenter, HomeFragment
         swipeRefreshLayout.setOnRefreshListener(this::onRefresh);
     }
 
+    public void setQrCodeStr(String qr){
+        qrCode = qr;
+        if(qrCode != null) {
+            propertySearch.setText(qrCode);
+        }
+    }
+
+    @OnClick(R.id.fab)
+    void onFabClick(){
+        getActivityCommunicator().gotoScanFragment();
+    }
+
     @Override
     public void postInit() {
         super.postInit();
         mPresenter.generateData();
         mPresenter.load();
+        if(qrCode != null && qrCode.length() > 0) {
+            propertySearch.setText(qrCode);
+        }
     }
 
     @OnTextChanged(R.id.property_search)
@@ -133,10 +166,13 @@ public class HomeFragment extends SurveyBaseFragment<HomePresenter, HomeFragment
         mPresenter.generateData();
         mPresenter.load();
         swipeRefreshLayout.setRefreshing(false);
+        propertySearch.setText("");
     }
 
     public interface LoginIntraction extends BaseIntranction {
         void gotoActionFragment(PropertyDto propertyData);
+
+        void gotoScanFragment();
     }
 
     @Override

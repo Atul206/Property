@@ -20,6 +20,9 @@ public class PropertyDto implements Serializable {
     private Bitmap singatureBitmap;
     private Bitmap photoBitmap;
     private String propertyAction;
+    private String permanentAddress;
+    private String remarks;
+    private String propertyEmail;
 
     public PropertyDto(String propertyId, String propertyName, String contactNo, String address, String latitude, String longitude, String urlSignature, String urlPropertyImage) {
         this.propertyId = propertyId;
@@ -127,5 +130,29 @@ public class PropertyDto implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getPermanentAddress() {
+        return permanentAddress;
+    }
+
+    public void setPermanentAddress(String permanentAddress) {
+        this.permanentAddress = permanentAddress;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
+    public String getPropertyEmail() {
+        return propertyEmail;
+    }
+
+    public void setPropertyEmail(String propertyEmail) {
+        this.propertyEmail = propertyEmail;
     }
 }

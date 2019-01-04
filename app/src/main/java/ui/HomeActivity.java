@@ -21,10 +21,15 @@ import ui.data.PropertyDto;
 import ui.fragment.FormFragment;
 import ui.fragment.HomeFragment;
 import ui.fragment.PropertyActionFragment;
+import ui.fragment.PropertyScanFragment;
 
 @ActivityScope
-public class HomeActivity extends SurveyBaseActivity implements HomeFragment.LoginIntraction, FormFragment.LoginIntraction, PropertyActionFragment.PropertyActionFragmentIntraction  {
+public class HomeActivity extends SurveyBaseActivity
+        implements HomeFragment.LoginIntraction, FormFragment.LoginIntraction,
+        PropertyActionFragment.PropertyActionFragmentIntraction,
+        PropertyScanFragment.PropertyScanFragmentIntraction{
 
+    String qrCodeString;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,9 +48,12 @@ public class HomeActivity extends SurveyBaseActivity implements HomeFragment.Log
 
     @Override
     public void gotoFormFragment(PropertyDto data) {
-        //TODO : @anshul intiate your developed fragment
-        //startFragment();
         startFragment(FormFragment.newInstance(data, getLastLocation()),true);
+    }
+
+    @Override
+    public void gotoScanFragment() {
+        startFragment(PropertyScanFragment.newInstance(), true);
     }
 
     @Override
@@ -55,7 +63,13 @@ public class HomeActivity extends SurveyBaseActivity implements HomeFragment.Log
 
     @Override
     public Class<? extends SurveyBaseFragment> initialFragmentClass() {
-        return HomeFragment.class;
+        return HomeFragment.newInstance().getClass();
     }
 
+    @Override
+    public void qrCodeString(String text) {
+        this.qrCodeString = text;
+        ((HomeFragment)getSupportFragmentManager().findFragmentByTag(HomeFragment.class.getSimpleName())).setQrCodeStr(qrCodeString);
+
+    }
 }

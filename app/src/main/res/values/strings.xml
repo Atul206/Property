@@ -2,8 +2,9 @@
     <string name="app_name">Property Tax Survey</string>
     <string name="enter">Enter</string>
     <string name="login">Google Login</string>
-    <string name="property_id">Property id:</string>
-    <string name="distance">Distance:</string>
-    <string name="name">Name:</string>
-    <string name="address">Address:</string>
+    <string name="property_id">Id:</string>
+    <string name="distance">Range:</string>
+    <string name="name"></string>
+    <string name="address">HNo:</string>
+    <string name="contact">+91-</string>
 </resources>

@@ -15,7 +15,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
@@ -31,8 +30,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.github.gcacace.signaturepad.views.SignaturePad;
-import com.google.android.gms.common.ConnectionResult;
 import com.google.firebase.storage.StorageReference;
+import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -44,7 +43,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import di.FragmentScope;
 import survey.property.roadster.com.surveypropertytax.BaseIntranction;
-import survey.property.roadster.com.surveypropertytax.PApplication;
 import survey.property.roadster.com.surveypropertytax.R;
 import survey.property.roadster.com.surveypropertytax.SurveyBaseFragment;
 import ui.FormPresenter;
@@ -65,6 +63,16 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
     EditText editPropertyName;
     @BindView(R.id.edit_property_contact_no)
     EditText editPropertyContactNo;
+    @BindView(R.id.edit_property_address)
+    EditText editPropertyAddress;
+    @BindView(R.id.edit_property_paddress)
+    EditText editPermanentAddress;
+    @BindView(R.id.edit_property_email_id)
+    EditText editEmailAddress;
+    @BindView(R.id.edit_property_remark)
+    EditText editRemarks;
+    @BindView(R.id.edit_property_id)
+    EditText editPropertyId;
     @BindView(R.id.btn_save_form)
     Button btnSaveForm;
 
@@ -163,6 +171,8 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
     public void initLayout() {
         editPropertyContactNo.setText(String.valueOf(mPresenter.getPropertyData().getContactNo()));
         editPropertyName.setText(String.valueOf(mPresenter.getPropertyData().getPropertyName()));
+        editPropertyAddress.setText(String.valueOf(mPresenter.getPropertyData().getAddress()));
+        editPropertyId.setText(String.valueOf(mPresenter.getPropertyData().getPropertyId()));
     }
 
     @NonNull
@@ -201,12 +211,26 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
 
             showToast("Couldn't get the location. Make sure location is enabled on the device");
         }
+        if(imageBitmap == null || signaturePad == null) {
+            showToast("Please take picture before submission!");
+            return;
+        }
 
         imageView.setDrawingCacheEnabled(true);
         imageView.buildDrawingCache();
+        mPresenter.getPropertyData().setPermanentAddress(String.valueOf(editPermanentAddress.getText()));
+        mPresenter.getPropertyData().setPropertyEmail(String.valueOf(editEmailAddress.getText()));
+        mPresenter.getPropertyData().setRemarks(String.valueOf(editRemarks.getText()));
         if(mPresenter.getPropertyData().getLatitude() == null) mPresenter.getPropertyData().setLatitude(String.valueOf(latitude));
         if(mPresenter.getPropertyData().getLongitude() == null) mPresenter.getPropertyData().setLongitude(String.valueOf(longitude));
         mPresenter.registerOfflineFile();
+        new LovelyInfoDialog(getActivity())
+                .setTopColorRes(android.R.color.white)
+                .setIcon(R.drawable.ic_success)
+                //This will add Don't show again checkbox to the dialog. You can pass any ID as argument
+                .setTitle("Property id - " + String.valueOf(editPropertyId.getText()))
+                .setMessage("Submited")
+                .show();
         getActivity().onBackPressed();
     }
 

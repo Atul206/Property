@@ -62,6 +62,10 @@ public class PropertyAdapter extends  LoadingAdapter<PropertyData, PropertyAdapt
         TextView propertyDistance;
 
         @NonNull
+        @BindView(R.id.contact)
+        TextView contact;
+
+        @NonNull
         @BindView(R.id.property_address)
         TextView propertyAddress;
 
@@ -77,6 +81,7 @@ public class PropertyAdapter extends  LoadingAdapter<PropertyData, PropertyAdapt
                 propertyName.setText(context.getString(R.string.name) + " " +item.getPropertyName());
                 propertyId.setText(context.getString(R.string.property_id) + " " +String.valueOf(item.getPropertyId()));
                 propertyAddress.setText(context.getString(R.string.address) + " " +String.valueOf(item.getAddress()));
+                contact.setText(context.getString(R.string.contact) + String.valueOf(item.getContactNo()));
                 mainLayout.setOnClickListener(__ -> {
                     callback.onAdapterItemClick(position, data);
                 });

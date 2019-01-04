@@ -6,6 +6,7 @@ import di.FragmentScope;
 import ui.fragment.FormFragment;
 import ui.fragment.HomeFragment;
 import ui.fragment.PropertyActionFragment;
+import ui.fragment.PropertyScanFragment;
 
 @Module
 public abstract class SurevyFragmentProvider {
@@ -21,4 +22,8 @@ public abstract class SurevyFragmentProvider {
     @ContributesAndroidInjector(modules = {PropertyActionFragmentModule.class})
     @FragmentScope
     abstract PropertyActionFragment propertyActionFragment();
+
+    @ContributesAndroidInjector(modules = {PropertyScanFragmentModule.class})
+    @FragmentScope
+    abstract PropertyScanFragment propertyScanFragment();
 }

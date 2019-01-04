@@ -1,8 +1,5 @@
 package ui.data;
 
-import android.graphics.Bitmap;
-
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +25,10 @@ public class DetailDto{
         data.put("urlSignature", propertyData.getUrlSignature());
         data.put("urlPropertyImage", propertyData.getUrlPropertyImage());
         data.put("propertyAction", propertyData.getPropertyAction());
+        data.put("propertyAddress", propertyData.getAddress());
+        data.put("propertyEmailId", propertyData.getPropertyEmail());
+        data.put("propertyPermanentAddress", propertyData.getPropertyEmail());
+        data.put("propertyRemark", propertyData.getRemarks());
     }
 
     public String getPhoneNumber() {

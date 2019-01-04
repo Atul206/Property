@@ -36,8 +36,12 @@ android {
     allprojects {
         repositories {
             jcenter()
+            mavenCentral()
             maven { url 'https://maven.google.com' }
         }
+    }
+    packagingOptions {
+        exclude 'META-INF/proguard/androidx-annotations.pro'
     }
 }
 
@@ -87,6 +91,9 @@ dependencies {
     compile 'com.github.gcacace:signature-pad:1.2.1'
     // location
     implementation 'com.google.android.gms:play-services-location:11.0.4'
+
+    implementation 'com.budiyev.android:code-scanner:2.1.0'
+    compile 'com.yarolegovich:lovely-dialog:1.1.0'
 
 }
 
