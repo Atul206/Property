@@ -1,5 +1,6 @@
 package survey.property.roadster.com.surveypropertytax;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
@@ -16,6 +17,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -61,11 +63,14 @@ public class PApplication extends DaggerBaseApplication {
 
     private List<PropertyDbObject> propertyDbObjects;
 
+
     @Override
     public void onCreate() {
         super.onCreate();
         readFileFromJsonFile();
         scheduleOfflineJob();
+        sharedPreferences = getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE);
+
     }
 
     private void readFileFromJsonFile() {
@@ -168,6 +173,7 @@ public class PApplication extends DaggerBaseApplication {
         }).addOnSuccessListener(taskSnapshot -> {
             // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
             // ...
+            propertyData.setSingatureBitmap(null);
             propertyData.setUrlSignature(taskSnapshot.getDownloadUrl().toString());
             uploadPropertyPicture(propertyData);
         });
@@ -187,6 +193,7 @@ public class PApplication extends DaggerBaseApplication {
         }).addOnSuccessListener(taskSnapshot -> {
             // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
             // ...
+            propertyData.setPhotoBitmap(null);
             propertyData.setUrlPropertyImage(taskSnapshot.getDownloadUrl().toString());
             writeToDatabase(propertyData);
         });
@@ -205,19 +212,7 @@ public class PApplication extends DaggerBaseApplication {
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference reference = database.getReference("property_survey");
             reference = reference.child(uId);
-            reference.setValue(detailDto).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    Log.d(TAG, String.valueOf(task.getResult()));
-                }
-            })
-                    .addOnSuccessListener(aVoid -> Log.d(TAG, "Write success"))
-                    .addOnFailureListener(e -> {
-                        // Write failed
-                        // ...
-                        Log.d(TAG, "Write fail");
-
-                    });
+            reference.setValue(detailDto, (databaseError, databaseReference) -> Log.d(TAG, "Action taken"));
         } else {
             Log.d(TAG, "user getting null");
         }
