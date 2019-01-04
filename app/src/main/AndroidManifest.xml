@@ -20,8 +20,21 @@
 
         <activity
             android:name="ui.HomeActivity"
+            android:label="Property/Action List"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustNothing">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:label="Property List"
+            android:name="ui.activity.LoginIntroActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,18 +43,7 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name="ui.activity.LoginIntroActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustNothing">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        </activity>
-
-        <service android:name=".OfflineJobService" />
+        <service android:name=".OfflineJobService" android:exported="true" />
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="${applicationId}.provider"

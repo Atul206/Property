@@ -15,13 +15,21 @@ import di.ActivityScope;
 import survey.property.roadster.com.surveypropertytax.SurveyBaseActivity;
 import survey.property.roadster.com.surveypropertytax.SurveyBaseFragment;
 import ui.LocationUtil.LocationHelper;
+import ui.activity.LoginIntroActivity;
 import ui.data.PropertyData;
 import ui.data.PropertyDto;
 import ui.fragment.FormFragment;
 import ui.fragment.HomeFragment;
+import ui.fragment.PropertyActionFragment;
 
 @ActivityScope
-public class HomeActivity extends SurveyBaseActivity implements HomeFragment.LoginIntraction, FormFragment.LoginIntraction  {
+public class HomeActivity extends SurveyBaseActivity implements HomeFragment.LoginIntraction, FormFragment.LoginIntraction, PropertyActionFragment.PropertyActionFragmentIntraction  {
+
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     protected int getLayout() {
@@ -31,7 +39,6 @@ public class HomeActivity extends SurveyBaseActivity implements HomeFragment.Log
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        finish();
     }
 
     @Override
@@ -39,6 +46,11 @@ public class HomeActivity extends SurveyBaseActivity implements HomeFragment.Log
         //TODO : @anshul intiate your developed fragment
         //startFragment();
         startFragment(FormFragment.newInstance(data, getLastLocation()),true);
+    }
+
+    @Override
+    public void gotoActionFragment(PropertyDto data) {
+        startFragment(PropertyActionFragment.newInstance(data), true);
     }
 
     @Override

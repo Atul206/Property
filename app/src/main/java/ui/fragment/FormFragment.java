@@ -161,8 +161,8 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
 
     @Override
     public void initLayout() {
-        editPropertyContactNo.setText(String.valueOf(mPresenter.getPropertyData().getPropertyName()));
-        editPropertyName.setText(String.valueOf(mPresenter.getPropertyData().getContactNo()));
+        editPropertyContactNo.setText(String.valueOf(mPresenter.getPropertyData().getContactNo()));
+        editPropertyName.setText(String.valueOf(mPresenter.getPropertyData().getPropertyName()));
     }
 
     @NonNull
@@ -204,6 +204,8 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
 
         imageView.setDrawingCacheEnabled(true);
         imageView.buildDrawingCache();
+        if(mPresenter.getPropertyData().getLatitude() == null) mPresenter.getPropertyData().setLatitude(String.valueOf(latitude));
+        if(mPresenter.getPropertyData().getLongitude() == null) mPresenter.getPropertyData().setLongitude(String.valueOf(longitude));
         mPresenter.registerOfflineFile();
         getActivity().onBackPressed();
     }

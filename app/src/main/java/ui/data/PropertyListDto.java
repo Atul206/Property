@@ -18,17 +18,18 @@ public class PropertyListDto implements PropertyData {
         processData();
     }
 
+
+
     @Override
     public void processData(){
         for(PropertyDbObject p: propertyDbObjects) {
-            propertyDtoList.add(new PropertyDto(p.getPropertyId(), p.getPropertyName(), p.getContactNo(), p.getLatitude(), p.getLongitude(), p.getUrlSignature(), p.getUrlPropertyImage()));
+            propertyDtoList.add(new PropertyDto(p.getPropertyId(), p.getPropertyName(), p.getContactNo(), p.getAddress(), p.getLatitude(), p.getLongitude(), p.getUrlSignature(), p.getUrlPropertyImage()));
         }
         Collections.sort(propertyDtoList, new SortByDistance());
     }
 
-
     @Override
-    public  List<PropertyDto> getItem() {
+    public List<PropertyDto> getItem() {
         return propertyDtoList;
     }
 

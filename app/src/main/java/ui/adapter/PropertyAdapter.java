@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -24,6 +26,7 @@ public class PropertyAdapter extends  LoadingAdapter<PropertyData, PropertyAdapt
 
 
     private Location mLastLocation;
+
     @Inject
     public PropertyAdapter(Context context, AdapterClickCallback<PropertyData> callback) {
         super(context, callback);
@@ -33,11 +36,6 @@ public class PropertyAdapter extends  LoadingAdapter<PropertyData, PropertyAdapt
     PropertyViewHolder getMainViewHolder(ViewGroup parent, int viewType) {
         return  new PropertyViewHolder(LayoutInflater.from(context).inflate(R.layout.property_item,
                 parent, false));
-    }
-
-    @Override
-    PropertyData getItem(int position) {
-        return (PropertyData) data.getItem().get(position);
     }
 
     @Override
@@ -63,18 +61,22 @@ public class PropertyAdapter extends  LoadingAdapter<PropertyData, PropertyAdapt
         @BindView(R.id.property_distance)
         TextView propertyDistance;
 
+        @NonNull
+        @BindView(R.id.property_address)
+        TextView propertyAddress;
+
         public PropertyViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
         }
 
         public void holdData(int position){
-            PropertyDto item = data.getItem().get(position);
+            PropertyDto item = ((List<PropertyDto>)data.getItem()).get(position);
             if(item != null && item instanceof PropertyDto) {
                 propertyDistance.setText(context.getString(R.string.distance) + " " + String.valueOf(calculateDistance(item) + " Km"));
                 propertyName.setText(context.getString(R.string.name) + " " +item.getPropertyName());
                 propertyId.setText(context.getString(R.string.property_id) + " " +String.valueOf(item.getPropertyId()));
-
+                propertyAddress.setText(context.getString(R.string.address) + " " +String.valueOf(item.getAddress()));
                 mainLayout.setOnClickListener(__ -> {
                     callback.onAdapterItemClick(position, data);
                 });
@@ -96,6 +98,6 @@ public class PropertyAdapter extends  LoadingAdapter<PropertyData, PropertyAdapt
 
     @Override
     public int getItemCount() {
-        return data == null ? 0: data.getItem().size();
+        return data == null ? 0: ((List<PropertyDto>)data.getItem()).size();
     }
 }

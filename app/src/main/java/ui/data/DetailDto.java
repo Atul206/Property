@@ -1,18 +1,34 @@
 package ui.data;
 
-import java.io.Serializable;
+import android.graphics.Bitmap;
 
-public class DetailDto implements Serializable {
-    private PropertyDto data;
+public class DetailDto {
     private String phoneNumber;
     private long createdDate;
     private String profilePicUrl;
     private String emailId;
     private String downloadUrl;
     private String name;
+    String propertyId;
+    String propertyName;
+    String contactNo;
+    int distance;
+    String latitude;
+    String longitude;
+    String urlSignature;
+    String urlPropertyImage;
+    private String propertyAction;
 
-    public PropertyDto getData() {
-        return data;
+    public DetailDto(PropertyDto propertyData) {
+        this.propertyId = propertyData.getPropertyId();
+        this.propertyName = propertyData.getPropertyName();
+        this.contactNo = propertyData.getContactNo();
+        this.distance = propertyData.getDistance();
+        this.latitude = propertyData.getLatitude();
+        this.longitude = propertyData.getLongitude();
+        this.urlSignature = propertyData.getUrlSignature();
+        this.urlPropertyImage = propertyData.getUrlPropertyImage();
+        this.propertyAction = propertyData.getPropertyAction();
     }
 
     public String getPhoneNumber() {
@@ -39,10 +55,6 @@ public class DetailDto implements Serializable {
         return name;
     }
 
-    public void setData(PropertyDto data) {
-        this.data = data;
-    }
-
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
@@ -67,8 +79,7 @@ public class DetailDto implements Serializable {
         this.name = name;
     }
 
-    public DetailDto(PropertyDto data, String phoneNumber, long createdDate, String profilePicUrl, String emailId, String downloadUrl, String name) {
-        this.data = data;
+    public DetailDto(String phoneNumber, long createdDate, String profilePicUrl, String emailId, String downloadUrl, String name) {
         this.phoneNumber = phoneNumber;
         this.createdDate = createdDate;
         this.profilePicUrl = profilePicUrl;

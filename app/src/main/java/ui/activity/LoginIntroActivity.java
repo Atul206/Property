@@ -64,6 +64,7 @@ public class LoginIntroActivity extends MaterialIntroActivity implements LoaderM
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseAuth.addAuthStateListener(mListener);
 
+
         addSlide(new SlideFragmentBuilder()
                         .backgroundColor(R.color.colorPrimary)
                         .buttonsColor(R.color.colorAccent)
@@ -79,13 +80,13 @@ public class LoginIntroActivity extends MaterialIntroActivity implements LoaderM
                             showMessage("You need to login!");
                         }else{
                             startActivity(new Intent(LoginIntroActivity.this, HomeActivity.class));
-                            finish();
+                            onFinish();
                             //open new activity
                         }
                     }
                 },  firebaseAuth.getCurrentUser() != null ? getString(R.string.enter) : getString(R.string.login)));
 
-        enableLastSlideAlphaExitTransition(true);
+        enableLastSlideAlphaExitTransition(false);
     }
 
     public void initGSignInstace(){
@@ -174,5 +175,11 @@ public class LoginIntroActivity extends MaterialIntroActivity implements LoaderM
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
+    }
+
+    @Override
+    public void onFinish() {
+        super.onFinish();
+        this.finish();
     }
 }

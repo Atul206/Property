@@ -14,12 +14,14 @@ public class PropertyDto implements Serializable {
     int distance;
     String latitude;
     String longitude;
+    String address;
     String urlSignature;
     String urlPropertyImage;
     private Bitmap singatureBitmap;
     private Bitmap photoBitmap;
+    private String propertyAction;
 
-    public PropertyDto(String propertyId, String propertyName, String contactNo,String latitude, String longitude, String urlSignature, String urlPropertyImage) {
+    public PropertyDto(String propertyId, String propertyName, String contactNo, String address, String latitude, String longitude, String urlSignature, String urlPropertyImage) {
         this.propertyId = propertyId;
         this.propertyName = propertyName;
         this.contactNo = contactNo;
@@ -27,11 +29,12 @@ public class PropertyDto implements Serializable {
         this.longitude = longitude;
         this.urlSignature = urlSignature;
         this.urlPropertyImage = urlPropertyImage;
+        this.address = address;
         this.distance = 0;
     }
 
     public String getPropertyName() {
-        return propertyName;
+        return (propertyName == null || propertyName.length() == 0) ? " - " : propertyName;
     }
 
     public void setPropertyName(String propertyName) {
@@ -39,7 +42,7 @@ public class PropertyDto implements Serializable {
     }
 
     public String getPropertyId() {
-        return propertyId;
+        return (propertyId == null || propertyId.length() == 0) ? " - " : propertyId;
     }
 
     public void setPropertyId(String propertyId) {
@@ -108,5 +111,21 @@ public class PropertyDto implements Serializable {
 
     public Bitmap getPhotoBitmap() {
         return photoBitmap;
+    }
+
+    public String getPropertyAction() {
+        return propertyAction;
+    }
+
+    public void setPropertyAction(String propertyAction) {
+        this.propertyAction = propertyAction;
+    }
+
+    public String getAddress() {
+        return (address == null || address.length() == 0) ? " - " : address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface PropertyData {
     void processData();
-    List<PropertyDto> getItem();
+    Object getItem();
 }

@@ -45,8 +45,6 @@ public abstract class LoadingAdapter<T, VH extends RecyclerView.ViewHolder> exte
         void onAdapterItemClick(int position, @NonNull T data);
     }
 
-    abstract T getItem(int position);
-
     public void addItem(T items){
         data = items;
         notifyDataSetChanged();

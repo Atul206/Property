@@ -1,13 +1,16 @@
 package ui.fragment;
 
-import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import com.google.firebase.storage.StorageReference;
+
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -18,7 +21,6 @@ import di.FragmentScope;
 import io.reactivex.subjects.PublishSubject;
 import survey.property.roadster.com.surveypropertytax.BaseIntranction;
 import survey.property.roadster.com.surveypropertytax.R;
-import survey.property.roadster.com.surveypropertytax.SurveyBaseActivity;
 import survey.property.roadster.com.surveypropertytax.SurveyBaseFragment;
 import ui.HomePresenter;
 import ui.HomeView;
@@ -50,9 +52,15 @@ public class HomeFragment extends SurveyBaseFragment<HomePresenter, HomeFragment
     @BindView(R.id.property_search)
     EditText propertySearch;
 
+    @BindView(R.id.bottom_sheet)
+    LinearLayout bottomSheet;
+
+    private BottomSheetBehavior bottomSheetBehavior;
+
     @Override
     public void preInit() {
         super.preInit();
+
     }
 
     @Override
@@ -104,7 +112,11 @@ public class HomeFragment extends SurveyBaseFragment<HomePresenter, HomeFragment
 
     @Override
     public void onAdapterItemClick(int position, @NonNull PropertyData data) {
-        getActivityCommunicator().gotoFormFragment(data.getItem().get(position));
+        openBottomSheet(((List<PropertyDto>)data.getItem()).get(position));
+    }
+
+    void openBottomSheet(PropertyDto propertyData){
+       getActivityCommunicator().gotoActionFragment(propertyData);
     }
 
     public PropertyAdapter getAdapter() {
@@ -124,7 +136,7 @@ public class HomeFragment extends SurveyBaseFragment<HomePresenter, HomeFragment
     }
 
     public interface LoginIntraction extends BaseIntranction {
-        void gotoFormFragment(PropertyDto data);
+        void gotoActionFragment(PropertyDto propertyData);
     }
 
     @Override

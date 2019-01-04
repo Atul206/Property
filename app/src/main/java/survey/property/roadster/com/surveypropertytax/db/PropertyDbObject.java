@@ -29,6 +29,10 @@ public class PropertyDbObject {
     private String contactNo;
 
     @NonNull
+    @ColumnInfo(name = "address")
+    private String address;
+
+    @NonNull
     @ColumnInfo(name = "latitude")
     private String latitude;
 
@@ -42,7 +46,7 @@ public class PropertyDbObject {
     @ColumnInfo(name = "url_property_image")
     private String urlPropertyImage;
 
-    public PropertyDbObject(@NonNull String propertyId, @NonNull String propertyName, @NonNull String contactNo, @NonNull String latitude, @NonNull String longitude, String urlSignature,String urlPropertyImage) {
+    public PropertyDbObject(@NonNull String propertyId, @NonNull String propertyName, @NonNull String contactNo, @NonNull String address, @NonNull String latitude, @NonNull String longitude, String urlSignature,String urlPropertyImage) {
         this.propertyId = propertyId;
         this.propertyName = propertyName;
         this.contactNo = contactNo;
@@ -50,6 +54,17 @@ public class PropertyDbObject {
         this.longitude = longitude;
         this.urlSignature =  urlSignature;
         this.urlPropertyImage = urlPropertyImage;
+        this.address = address;
+    }
+
+
+    @NonNull
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(@NonNull String address) {
+        this.address = address;
     }
 
     @NonNull

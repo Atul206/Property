@@ -100,8 +100,6 @@ public abstract class SurveyBaseFragment<P, T extends BaseIntranction> extends D
 
     protected abstract void initListener();
 
-
-
     @NonNull
     protected T getActivityCommunicator() {
         return mListener;

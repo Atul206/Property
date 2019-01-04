@@ -10,7 +10,11 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.transition.Fade;
+import android.transition.TransitionInflater;
+import android.transition.TransitionSet;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -32,12 +36,16 @@ public abstract class SurveyBaseActivity extends DaggerAppCompatActivity impleme
 
     private ViewGroup vMainContainer;
 
+    private static final long MOVE_DEFAULT_TIME = 200;
+
+
     @Inject
     DispatchingAndroidInjector<Fragment> supportFragmentInjector;
     @Inject
     DispatchingAndroidInjector<android.app.Fragment> frameworkFragmentInjector;
 
     LocationHelper locationHelper;
+    private FragmentManager mFragmentManager;
 
     Location mLastLocation;
 
@@ -47,6 +55,7 @@ public abstract class SurveyBaseActivity extends DaggerAppCompatActivity impleme
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
 
+        mFragmentManager = getSupportFragmentManager();
         vMainContainer = findViewById(R.id.main_container);
 
         if (getLayout() != 0) {
@@ -61,7 +70,7 @@ public abstract class SurveyBaseActivity extends DaggerAppCompatActivity impleme
             startFragment(initialFragmentClass(), true, null);
     }
 
-    private void setUpLocation(){
+    private void setUpLocation() {
         locationHelper = new LocationHelper(this);
         locationHelper.checkpermission();
         // check availability of play services
@@ -102,6 +111,8 @@ public abstract class SurveyBaseActivity extends DaggerAppCompatActivity impleme
         FragmentTransaction transaction = fm.beginTransaction();
         //CommonLib.hideKeyboard(this);
 
+        transaction = performTransition(transaction, fragment);
+        if(transaction == null) transaction = fm.beginTransaction();
         int index = fm.getBackStackEntryCount() - 1;
 //         hack to speed up animations
 //         uncomment when we include animations
@@ -113,15 +124,34 @@ public abstract class SurveyBaseActivity extends DaggerAppCompatActivity impleme
             transaction.hide(fm.findFragmentByTag(tag));
         }
 
-        transaction.
-                add(R.id.main_container, fragment, fragment.getClass().getSimpleName());
-
 
         if (addToBackStack) {
             transaction.addToBackStack(fragment.getClass().getSimpleName());
         }
 
         transaction.commitAllowingStateLoss();
+    }
+
+    private FragmentTransaction performTransition(FragmentTransaction transaction, Fragment nextFragment) {
+        if (isDestroyed()) {
+            return null;
+        }
+        // 1. Exit for Previous Fragment
+
+        // 2. Shared Elements Transition
+        TransitionSet enterTransitionSet = new TransitionSet();
+        enterTransitionSet.addTransition(TransitionInflater.from(this).inflateTransition(android.R.transition.slide_right));
+        enterTransitionSet.setDuration(MOVE_DEFAULT_TIME);
+        nextFragment.setEnterTransition(enterTransitionSet);
+
+        // 3. Enter Transition for New Fragment
+//        Fade enterFade = new Fade();
+//        enterFade.setStartDelay(MOVE_DEFAULT_TIME + FADE_DEFAULT_TIME);
+//        enterFade.setDuration(FADE_DEFAULT_TIME);
+//        nextFragment.setEnterTransition(enterFade);
+        transaction.
+                add(R.id.main_container, nextFragment, nextFragment.getClass().getSimpleName());
+        return transaction;
     }
 
     @Override
@@ -139,9 +169,11 @@ public abstract class SurveyBaseActivity extends DaggerAppCompatActivity impleme
         super.onDestroy();
     }
 
-    public Location getLastLocation(){
+    public Location getLastLocation() {
         return mLastLocation;
-    };
+    }
+
+    ;
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
