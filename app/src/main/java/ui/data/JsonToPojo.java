@@ -6,20 +6,24 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 public class JsonToPojo implements Serializable {
-    @SerializedName("HTAX_PROPERTY_UNIT_ID")
+    @SerializedName("unique_property_id")
     @Expose
     String propertyID;
 
-    @SerializedName("OWNER_NAME")
+    @SerializedName("owenr_name")
     @Expose
     String ownerName;
 
-    @SerializedName("Mobile number")
+    @SerializedName("mobile_no")
     String contactDetail;
 
-    @SerializedName("FULL_ADDRESS")
+    @SerializedName("postal_add")
     @Expose
     String address;
+
+    @SerializedName("new_postal_add")
+    @Expose
+    String newAddress;
 
     @SerializedName("latitude")
     @Expose
@@ -28,6 +32,10 @@ public class JsonToPojo implements Serializable {
     @SerializedName("longitude")
     @Expose
     String longitude;
+
+    public String getNewAddress() {
+        return newAddress;
+    }
 
     public String getAddress() {
         return address;

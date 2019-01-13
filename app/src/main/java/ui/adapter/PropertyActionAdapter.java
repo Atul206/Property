@@ -17,6 +17,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import survey.property.roadster.com.surveypropertytax.R;
 import ui.data.PropertyData;
+import ui.enums.TagType;
 
 public class PropertyActionAdapter extends LoadingAdapter<PropertyData, PropertyActionAdapter.PropertyActionViewHolder>  {
 
@@ -52,18 +53,18 @@ public class PropertyActionAdapter extends LoadingAdapter<PropertyData, Property
         }
 
         public void holdData(int position){
-            String item = ((List<String>)data.getItem()).get(position);
-            if(item != null && item instanceof String) {
+            //String item = data.get(position);
+            /*if(item != null && item instanceof String) {
                 actionType.setText(item);
                 mainLayout.setOnClickListener(__ -> {
-                    callback.onAdapterItemClick(position, data);
+                    callback.onAdapterItemClick(position, data, TagType.NO_ACTION);
                 });
-            }
+            }*/
         }
     }
 
     @Override
     public int getItemCount() {
-        return data == null ? 0: ((List<String>)data.getItem()).size();
+        return data == null ? 0: 0;//(List<String>)data.getItem()).size();
     }
 }

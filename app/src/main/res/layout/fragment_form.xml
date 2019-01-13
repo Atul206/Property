@@ -29,7 +29,7 @@
                 style="@style/TextForValue"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Enter name"
+                android:hint="Property Id"
                 android:enabled="false"
                 android:imeOptions="actionNext"
                 android:inputType="textNoSuggestions"
@@ -38,6 +38,7 @@
 
             <TextView
                 style="@style/TextForKey"
+                android:layout_marginTop="12dp"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:text="Name"
@@ -46,6 +47,7 @@
             <EditText
                 android:id="@+id/edit_property_name"
                 style="@style/TextForValue"
+                android:layout_marginTop="12dp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="Enter name"
@@ -76,25 +78,25 @@
                 android:singleLine="true"
                 android:textColor="@color/colorPrimaryDark" />
 
+
             <TextView
                 style="@style/TextForKey"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:text="Address."
+                android:text="Add Contact"
                 android:textColor="@color/colorPrimaryDark" />
 
             <EditText
-                android:id="@+id/edit_property_address"
+                android:id="@+id/edit_property_contact_no_new"
                 style="@style/TextForValue"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:hint="Enter contact no"
-                android:enabled="false"
                 android:imeOptions="actionDone"
-                android:inputType="textEmailAddress"
-                android:maxLength="50"
+                android:inputType="phone"
+                android:maxLength="10"
                 android:singleLine="true"
                 android:textColor="@color/colorPrimaryDark" />
 
@@ -119,6 +121,30 @@
                 android:singleLine="true"
                 android:textColor="@color/colorPrimaryDark" />
 
+            <TextView
+                style="@style/TextForKey"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Address."
+                android:textColor="@color/colorPrimaryDark" />
+
+            <EditText
+                android:id="@+id/edit_property_address"
+                style="@style/TextForValue"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_columnSpan="2"
+                android:gravity="top"
+                android:layout_gravity="fill_horizontal|top"
+                android:layout_marginTop="4dp"
+                android:maxLines="4"
+                android:background="@drawable/boundary_round_corner"
+                android:hint="Enter contact no"
+                android:imeOptions="actionDone"
+                android:inputType="textMultiLine"
+                android:textColor="@color/colorPrimaryDark" />
+
 
             <TextView
                 style="@style/TextForKey"
@@ -132,7 +158,7 @@
                 android:id="@+id/edit_property_paddress"
                 style="@style/TextForValue"
                 android:layout_width="0dp"
-                android:layout_height="30dp"
+                android:layout_height="50dp"
                 android:layout_columnSpan="2"
                 android:gravity="top"
                 android:layout_gravity="fill_horizontal|top"
@@ -141,7 +167,7 @@
                 android:background="@drawable/boundary_round_corner"
                 android:hint="Enter contact no"
                 android:imeOptions="actionDone"
-                android:inputType="textEmailAddress"
+                android:inputType="textMultiLine"
                 android:textColor="@color/colorPrimaryDark" />
 
             <TextView
@@ -187,37 +213,12 @@
                 android:background="@drawable/boundary_round_corner" />
 
             <Button
+                android:id="@+id/clear"
                 android:layout_width="0dp"
                 android:layout_columnSpan="2"
                 android:layout_gravity="fill_horizontal|center"
                 android:text="clear"
                 android:textColor="@android:color/white" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_columnSpan="2"
-                android:layout_gravity="fill_horizontal|center"
-                android:layout_marginTop="12dp"
-                android:text="Take photo"
-                android:textColor="@color/colorPrimaryDark" />
-
-            <ImageView
-                android:id="@+id/image_view"
-                android:layout_width="0dp"
-                android:layout_height="100dp"
-                android:layout_columnSpan="2"
-                android:layout_gravity="fill_horizontal|center"
-                android:layout_marginTop="4dp"
-                android:background="@drawable/boundary_round_corner" />
-
-            <Button
-                android:id="@+id/btn_take_image"
-                android:layout_width="120dp"
-                android:layout_columnSpan="2"
-                android:layout_gravity="fill_horizontal|center"
-                android:text="TAKE IMAGE"
-                android:textColor="@android:color/white" />
-
 
             <Button
                 android:id="@+id/btn_save_form"

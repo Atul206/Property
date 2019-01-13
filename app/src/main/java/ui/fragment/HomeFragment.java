@@ -1,5 +1,8 @@
 package ui.fragment;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
@@ -7,6 +10,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
@@ -34,6 +38,7 @@ import ui.adapter.LoadingAdapter;
 import ui.adapter.PropertyAdapter;
 import ui.data.PropertyData;
 import ui.data.PropertyDto;
+import ui.enums.TagType;
 
 @FragmentScope
 public class HomeFragment extends SurveyBaseFragment<HomePresenter, HomeFragment.LoginIntraction>
@@ -41,6 +46,7 @@ public class HomeFragment extends SurveyBaseFragment<HomePresenter, HomeFragment
 
 
     private static final String QR_CODE_STR = "qr_code_search";
+    public static final int REQUEST_CAMERA = 1;
 
     @Inject
     @Named("propertySearchString")
@@ -84,6 +90,17 @@ public class HomeFragment extends SurveyBaseFragment<HomePresenter, HomeFragment
     @Override
     protected void initListener() {
         swipeRefreshLayout.setOnRefreshListener(this::onRefresh);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int totalItems = getAdapter().getItemCount();
+                if (totalItems > 0 && ((LinearLayoutManager) recyclerView.getLayoutManager())
+                        .findLastVisibleItemPosition() >= totalItems - 1) {
+                    mPresenter.onPageScrolled();
+                }
+            }
+        });
     }
 
     public void setQrCodeStr(String qr){
@@ -95,6 +112,16 @@ public class HomeFragment extends SurveyBaseFragment<HomePresenter, HomeFragment
 
     @OnClick(R.id.fab)
     void onFabClick(){
+        if (getActivity().getPackageManager().hasSystemFeature(
+                PackageManager.FEATURE_CAMERA)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (getActivity().checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions(new String[]{Manifest.permission.CAMERA},
+                            REQUEST_CAMERA);
+                    return;
+                }
+            }
+        }
         getActivityCommunicator().gotoScanFragment();
     }
 
@@ -144,8 +171,8 @@ public class HomeFragment extends SurveyBaseFragment<HomePresenter, HomeFragment
     }
 
     @Override
-    public void onAdapterItemClick(int position, @NonNull PropertyData data) {
-        openBottomSheet(((List<PropertyDto>)data.getItem()).get(position));
+    public void onAdapterItemClick(int position, @NonNull List<PropertyDto> data, TagType tagType) {
+        getActivityCommunicator().gotoFormFragment(data.get(position), tagType);
     }
 
     void openBottomSheet(PropertyDto propertyData){
@@ -158,7 +185,22 @@ public class HomeFragment extends SurveyBaseFragment<HomePresenter, HomeFragment
 
     @Override
     public void updateList(PropertyData propertyData) {
-        getAdapter().addItem(propertyData);
+        List<PropertyDto> data = propertyData.getItem();
+        if(null != data && !data.isEmpty()) {
+            getAdapter().addItem(data);
+            mPresenter.updateCurrentPage(data.get(data.size() - 1).getUid());
+        }
+    }
+
+    @Override
+    public void searchList(PropertyData propertyData){
+        getAdapter().removeAll();
+        List<PropertyDto> data = propertyData.getItem();
+        if(null != data && !data.isEmpty()) {
+            data.remove(data.size() - 1);
+            getAdapter().addItem(data);
+            mPresenter.updateCurrentPage(0);
+        }
     }
 
     private void onRefresh(){
@@ -167,12 +209,18 @@ public class HomeFragment extends SurveyBaseFragment<HomePresenter, HomeFragment
         mPresenter.load();
         swipeRefreshLayout.setRefreshing(false);
         propertySearch.setText("");
+        mPresenter.reset();
     }
 
     public interface LoginIntraction extends BaseIntranction {
         void gotoActionFragment(PropertyDto propertyData);
-
+        void gotoFormFragment(PropertyDto propertyDto, TagType tagType);
         void gotoScanFragment();
+    }
+
+    @Override
+    public void readData(String uid) {
+        //mApp.readDataFromDatabase("39C1000U63");
     }
 
     @Override

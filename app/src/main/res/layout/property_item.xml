@@ -1,99 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/main_layout"
-    android:paddingTop="10dp"
+    android:background="@drawable/card_bg"
     android:paddingBottom="10dp"
-    android:background="@drawable/card_bg">
+    android:paddingTop="10dp">
 
     <ImageView
         android:id="@+id/icon"
-        app:layout_constraintTop_toBottomOf="parent"
-        app:layout_constraintBottom_toTopOf="parent"
-        android:layout_marginLeft="5dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:src="@drawable/item_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:layout_marginTop="5sp"
-        android:layout_marginLeft="10sp"
-        android:id="@+id/property_id"
-        android:text="@string/property_id"
-        android:textSize="18sp"
-        android:textColor="@color/colorDarkGrey"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toRightOf="@id/icon"/>
+        android:layout_marginLeft="5dp"
+        android:src="@drawable/item_icon"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="parent" />
 
     <TextView
+        android:id="@+id/property_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10sp"
         android:layout_marginTop="5sp"
-        android:layout_marginRight="20sp"
+        android:text="Property tax"
         android:textStyle="bold"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="16sp"
-        android:id="@+id/property_distance"
-        android:textColor="@color/colorPrimaryDark"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        app:layout_constraintLeft_toRightOf="@id/icon" />
 
     <TextView
+        android:id="@+id/property_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10sp"
         android:layout_marginTop="5sp"
-        android:layout_marginBottom="5sp"
+        android:text="@string/property_id"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/property_label"
+        app:layout_constraintLeft_toRightOf="@id/icon" />
+
+    <TextView
+        android:id="@+id/property_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginRight="20sp"
+        android:layout_marginTop="5sp"
+        android:background="@drawable/round_bg_card"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="10dp"
+        android:text="@string/yes"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
         android:textStyle="bold"
-        android:textSize="14sp"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
         android:id="@+id/property_name"
-        android:textColor="@android:color/black"
-        android:paddingRight="200dp"
-        android:text="asjhasjhajkhsdjahjkahdjhadjkhajhasdhahkahsdjkasjkhadhajhjhahjasdhjkajshdjkahdkja"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5sp"
+        android:layout_marginLeft="10sp"
+        android:layout_marginRight="20sp"
+        android:layout_marginTop="5sp"
+        android:ellipsize="end"
         android:maxLines="1"
-        android:ellipsize="end"
+        android:paddingRight="200dp"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"
         app:layout_constraintLeft_toRightOf="@id/icon"
-        android:layout_marginLeft="10sp"
-        app:layout_constraintTop_toBottomOf="@id/property_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        app:layout_constraintTop_toBottomOf="@id/property_id" />
 
     <TextView
-        android:layout_marginTop="15sp"
-        android:layout_marginBottom="5sp"
-        android:layout_marginRight="20sp"
-        android:textStyle="bold"
-        android:textSize="14sp"
         android:id="@+id/property_address"
-        android:textColor="@color/colorPrimaryDark"
-        android:paddingRight="100dp"
-        android:maxLines="2"
-        android:ellipsize="end"
-        app:layout_constraintLeft_toRightOf="@id/icon"
-        android:layout_marginLeft="10sp"
-        app:layout_constraintTop_toBottomOf="@id/property_name"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5sp"
+        android:layout_marginLeft="10sp"
+        android:layout_marginRight="20sp"
+        android:layout_marginTop="15sp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:paddingRight="150dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@id/icon"
+        app:layout_constraintTop_toBottomOf="@id/property_name" />
 
     <TextView
-        android:layout_marginTop="15sp"
-        android:layout_marginBottom="5sp"
-        android:layout_marginRight="20sp"
-        android:textStyle="bold"
-        android:textSize="14sp"
         android:id="@+id/contact"
-        android:textColor="@color/colorPrimaryDark"
-        android:text="+91kjkdsjfsdjhf"
-        android:maxLines="2"
-        android:ellipsize="end"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginLeft="10sp"
-        app:layout_constraintBaseline_toBaselineOf="@id/property_name"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-
+        android:layout_height="wrap_content"
+        android:layout_marginRight="20sp"
+        android:layout_marginTop="5sp"
+        android:background="@drawable/round_bg_card_red"
+        android:paddingBottom="5dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="12dp"
+        android:paddingTop="2dp"
+        android:text="@string/no"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/property_name"
+        app:layout_constraintRight_toRightOf="parent"/>
 
 
 </android.support.constraint.ConstraintLayout>

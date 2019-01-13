@@ -21,6 +21,7 @@ import survey.property.roadster.com.surveypropertytax.R;
 import ui.LocationUtil.LocationHelper;
 import ui.data.PropertyData;
 import ui.data.PropertyDto;
+import ui.enums.TagType;
 
 public class PropertyAdapter extends  LoadingAdapter<PropertyData, PropertyAdapter.PropertyViewHolder> {
 
@@ -50,6 +51,10 @@ public class PropertyAdapter extends  LoadingAdapter<PropertyData, PropertyAdapt
         ConstraintLayout mainLayout;
 
         @NonNull
+        @BindView(R.id.property_label)
+        TextView propertyLabel;
+
+        @NonNull
         @BindView(R.id.property_id)
         TextView propertyId;
 
@@ -75,15 +80,21 @@ public class PropertyAdapter extends  LoadingAdapter<PropertyData, PropertyAdapt
         }
 
         public void holdData(int position){
-            PropertyDto item = ((List<PropertyDto>)data.getItem()).get(position);
+            PropertyDto item = (PropertyDto) data.get(position);
             if(item != null && item instanceof PropertyDto) {
-                propertyDistance.setText(context.getString(R.string.distance) + " " + String.valueOf(calculateDistance(item) + " Km"));
                 propertyName.setText(context.getString(R.string.name) + " " +item.getPropertyName());
                 propertyId.setText(context.getString(R.string.property_id) + " " +String.valueOf(item.getPropertyId()));
                 propertyAddress.setText(context.getString(R.string.address) + " " +String.valueOf(item.getAddress()));
-                contact.setText(context.getString(R.string.contact) + String.valueOf(item.getContactNo()));
-                mainLayout.setOnClickListener(__ -> {
-                    callback.onAdapterItemClick(position, data);
+                propertyDistance.setOnClickListener(v -> {
+                    callback.onAdapterItemClick(position, data, TagType.YES);
+                    //callback.onAdapterItemClick();
+                });
+
+                contact.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        callback.onAdapterItemClick(position, data, TagType.NO);
+                    }
                 });
             }
         }
@@ -103,6 +114,6 @@ public class PropertyAdapter extends  LoadingAdapter<PropertyData, PropertyAdapt
 
     @Override
     public int getItemCount() {
-        return data == null ? 0: ((List<PropertyDto>)data.getItem()).size();
+        return data == null ? 0: data.size();
     }
 }

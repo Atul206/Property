@@ -21,6 +21,7 @@ import ui.adapter.PropertyActionAdapter;
 import ui.data.PropertyActionList;
 import ui.data.PropertyData;
 import ui.data.PropertyDto;
+import ui.enums.TagType;
 
 public class PropertyActionFragment extends SurveyBaseFragment<ActionPresenter, PropertyActionFragment.PropertyActionFragmentIntraction>
         implements LoadingAdapter.AdapterClickCallback<PropertyData>, ActionView {
@@ -77,12 +78,6 @@ public class PropertyActionFragment extends SurveyBaseFragment<ActionPresenter, 
     }
 
     @Override
-    public void onAdapterItemClick(int position, @NonNull PropertyData data) {
-        propertyDto.setPropertyAction(((List<String>)data.getItem()).get(position));
-        getActivityCommunicator().gotoFormFragment(propertyDto);
-    }
-
-    @Override
     public void postInit() {
         super.postInit();
         mPresenter.load();
@@ -91,7 +86,7 @@ public class PropertyActionFragment extends SurveyBaseFragment<ActionPresenter, 
     @Override
     public void addItemInList(PropertyActionList propertyActionList) {
         getAdapter().removeAll();
-        getAdapter().addItem(propertyActionList);
+        //getAdapter().addItem(propertyActionList);
     }
 
     public static PropertyActionFragment newInstance(PropertyDto data) {
@@ -100,6 +95,11 @@ public class PropertyActionFragment extends SurveyBaseFragment<ActionPresenter, 
         bundle.putSerializable(PROPERTY_DATA, data);
         fragment.setArguments(bundle);
         return fragment;
+    }
+
+    @Override
+    public void onAdapterItemClick(int position, @NonNull List<PropertyDto> data, TagType tagType) {
+
     }
 
     public interface PropertyActionFragmentIntraction extends BaseIntranction {

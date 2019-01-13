@@ -17,7 +17,9 @@ public class PropertyRepoMapper {
     void proccessData(){
         if(jsonFileList.getSheet1() != null) {
             for (JsonToPojo p : jsonFileList.getSheet1()) {
-                propertyDbObjectList.add(new PropertyDbObject(p.getPropertyID(), p.getOwnerName(), p.getContactDetail(), p.getAddress(), p.getLatitude(), p.getLongitude(), null, null));
+                if(p.getPropertyID() != null) {
+                    propertyDbObjectList.add(new PropertyDbObject(p.getPropertyID(), p.getOwnerName(), p.getContactDetail(), p.getAddress(), p.getLatitude(), p.getLongitude(), null, null));
+                }
             }
         }
     }

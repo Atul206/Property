@@ -5,12 +5,20 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
+
+import ui.data.PropertyData;
+import ui.data.PropertyDto;
+import ui.data.PropertyListDto;
+import ui.enums.TagType;
 
 public abstract class LoadingAdapter<T, VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
 
     @NonNull
-    protected T data;
+    protected List<PropertyDto> data;
 
     @Inject
     AdapterClickCallback<T> callback;
@@ -42,11 +50,14 @@ public abstract class LoadingAdapter<T, VH extends RecyclerView.ViewHolder> exte
     }
 
     public interface AdapterClickCallback<T> {
-        void onAdapterItemClick(int position, @NonNull T data);
+        void onAdapterItemClick(int position, @NonNull List<PropertyDto> data, TagType tagType);
     }
 
-    public void addItem(T items){
-        data = items;
+    public void addItem(List<PropertyDto> items){
+        if(data == null) {
+            data = new ArrayList<>();
+        }
+        data.addAll(items);
         notifyDataSetChanged();
     }
 

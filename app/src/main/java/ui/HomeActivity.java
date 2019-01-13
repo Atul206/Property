@@ -18,6 +18,7 @@ import ui.LocationUtil.LocationHelper;
 import ui.activity.LoginIntroActivity;
 import ui.data.PropertyData;
 import ui.data.PropertyDto;
+import ui.enums.TagType;
 import ui.fragment.FormFragment;
 import ui.fragment.HomeFragment;
 import ui.fragment.PropertyActionFragment;
@@ -48,7 +49,7 @@ public class HomeActivity extends SurveyBaseActivity
 
     @Override
     public void gotoFormFragment(PropertyDto data) {
-        startFragment(FormFragment.newInstance(data, getLastLocation()),true);
+        startFragment(FormFragment.newInstance(data, getLastLocation(), TagType.NO_ACTION),true);
     }
 
     @Override
@@ -59,6 +60,11 @@ public class HomeActivity extends SurveyBaseActivity
     @Override
     public void gotoActionFragment(PropertyDto data) {
         startFragment(PropertyActionFragment.newInstance(data), true);
+    }
+
+    @Override
+    public void gotoFormFragment(PropertyDto data, TagType tagType) {
+        startFragment(FormFragment.newInstance(data, getLastLocation(), tagType),true);
     }
 
     @Override

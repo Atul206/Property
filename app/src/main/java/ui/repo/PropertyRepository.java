@@ -35,6 +35,13 @@ public class PropertyRepository {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+    public Flowable<PropertyListDto> getPropertyAfterUid(int uid) {
+        return propertyLoadDao.getPropertyAfter(uid)
+                .subscribeOn(Schedulers.io())
+                .map(PropertyListDto::new)
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
     public void insert(PropertyDbObject propertyDbObject) {
         Completable.fromRunnable(() -> propertyLoadDao.insert(propertyDbObject))
                 .subscribeOn(Schedulers.io())

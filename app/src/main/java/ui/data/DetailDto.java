@@ -13,6 +13,9 @@ public class DetailDto{
 
     Map<String, String> data;
 
+    public DetailDto() {
+    }
+
     public DetailDto(PropertyDto propertyData) {
 
         data = new HashMap<>();

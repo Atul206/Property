@@ -15,6 +15,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
@@ -31,6 +32,7 @@ import android.widget.Toast;
 
 import com.github.gcacace.signaturepad.views.SignaturePad;
 import com.google.firebase.storage.StorageReference;
+import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.yarolegovich.lovelydialog.LovelyInfoDialog;
 
 import java.io.File;
@@ -41,6 +43,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.Optional;
 import di.FragmentScope;
 import survey.property.roadster.com.surveypropertytax.BaseIntranction;
 import survey.property.roadster.com.surveypropertytax.R;
@@ -48,6 +51,7 @@ import survey.property.roadster.com.surveypropertytax.SurveyBaseFragment;
 import ui.FormPresenter;
 import ui.FormView;
 import ui.data.PropertyDto;
+import ui.enums.TagType;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -55,26 +59,43 @@ import static android.app.Activity.RESULT_OK;
 public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment.LoginIntraction>
         implements FormView {
 
+    @Nullable
     @BindView(R.id.signaturePad)
     SignaturePad signaturePad;
+    @Nullable
     @BindView(R.id.image_view)
     ImageView imageView;
+    @Nullable
     @BindView(R.id.edit_property_name)
     EditText editPropertyName;
+    @Nullable
     @BindView(R.id.edit_property_contact_no)
     EditText editPropertyContactNo;
+    @Nullable
     @BindView(R.id.edit_property_address)
     EditText editPropertyAddress;
+    @Nullable
     @BindView(R.id.edit_property_paddress)
     EditText editPermanentAddress;
+    @Nullable
     @BindView(R.id.edit_property_email_id)
     EditText editEmailAddress;
+    @Nullable
     @BindView(R.id.edit_property_remark)
     EditText editRemarks;
+    @Nullable
     @BindView(R.id.edit_property_id)
     EditText editPropertyId;
+    @Nullable
     @BindView(R.id.btn_save_form)
     Button btnSaveForm;
+    @Nullable
+    @BindView(R.id.spinner)
+    MaterialSpinner spinner;
+    @Nullable
+    @BindView(R.id.edit_property_contact_no_new)
+    EditText contactNew;
+
 
     public static String SURVEY_PIC = "survey_pic";
     public static final int REQUEST_CAMERA = 1;
@@ -89,6 +110,7 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
 
     private static final String PROPERTY_DATA = "property_data";
     private static final String LOCATION_DATA = "location_data";
+    private static final String TAG_TYPE = "tag_type";
 
     double latitude;
     double longitude;
@@ -100,6 +122,13 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        Bundle bundle = getArguments();
+        PropertyDto propertyData = (PropertyDto) bundle.getSerializable(PROPERTY_DATA);
+        Location location = bundle.getParcelable(LOCATION_DATA);
+        TagType tagType = (TagType) bundle.getSerializable(TAG_TYPE);
+        mPresenter.setPropertyData(propertyData);
+        mPresenter.setLastLocation(location);
+        mPresenter.setTagType(tagType);
     }
 
     @Override
@@ -125,36 +154,44 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
     @Override
     public void preInit() {
         super.preInit();
-        Bundle bundle = getArguments();
-        PropertyDto propertyData = (PropertyDto) bundle.getSerializable(PROPERTY_DATA);
-        Location location = bundle.getParcelable(LOCATION_DATA);
-        mPresenter.setPropertyData(propertyData);
-        mPresenter.setLastLocation(location);
     }
 
     @Override
     protected void initListener() {
-        signaturePad.setOnSignedListener(new SignaturePad.OnSignedListener() {
+        switch (mPresenter.getTagType()) {
+            case NO:
+                spinner.setItems("Locked", "Owner refused", "No one lives");
+                spinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
 
-            @Override
-            public void onStartSigning() {
-                //Event triggered when the pad is touched
-            }
+                    @Override
+                    public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
+                        mPresenter.getPropertyData().setReason(String.valueOf(item));
+                    }
+                });
+                break;
+            default:
+                signaturePad.setOnSignedListener(new SignaturePad.OnSignedListener() {
 
-            @Override
-            public void onSigned() {
-                //Event triggered when the pad is signed
-                Bitmap bitmap = signaturePad.getSignatureBitmap();
-                if (bitmap != null) {
-                    Toast.makeText(getActivity(), "Signature captured", Toast.LENGTH_LONG).show();
-                }
-            }
+                    @Override
+                    public void onStartSigning() {
+                        //Event triggered when the pad is touched
+                    }
 
-            @Override
-            public void onClear() {
-                signaturePad.clear();
-            }
-        });
+                    @Override
+                    public void onSigned() {
+                        //Event triggered when the pad is signed
+                        Bitmap bitmap = signaturePad.getSignatureBitmap();
+                        if (bitmap != null) {
+                            Toast.makeText(getActivity(), "Signature captured", Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onClear() {
+                        Toast.makeText(getActivity(), "Signature clear", Toast.LENGTH_LONG).show();
+                    }
+                });
+        }
     }
 
     @Override
@@ -164,11 +201,24 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
 
     @Override
     public int getLayout() {
-        return R.layout.fragment_form;
+        switch (mPresenter.getTagType()) {
+            case NO:
+                return R.layout.fragment_form_no;
+            default:
+                return R.layout.fragment_form;
+        }
     }
 
     @Override
     public void initLayout() {
+        switch (mPresenter.getTagType()) {
+            case YES:
+                break;
+            case NO:
+                break;
+            default:
+                return;
+        }
         editPropertyContactNo.setText(String.valueOf(mPresenter.getPropertyData().getContactNo()));
         editPropertyName.setText(String.valueOf(mPresenter.getPropertyData().getPropertyName()));
         editPropertyAddress.setText(String.valueOf(mPresenter.getPropertyData().getAddress()));
@@ -211,18 +261,25 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
 
             showToast("Couldn't get the location. Make sure location is enabled on the device");
         }
-        if(imageBitmap == null || signaturePad == null) {
-            showToast("Please take picture before submission!");
+        if(signaturePad != null || imageView != null) {
+
+        }else{
+            showToast("Signature or photo missing");
             return;
         }
+        if (imageBitmap != null) {
+            imageView.setDrawingCacheEnabled(true);
+            imageView.buildDrawingCache();
+        }
 
-        imageView.setDrawingCacheEnabled(true);
-        imageView.buildDrawingCache();
         mPresenter.getPropertyData().setPermanentAddress(String.valueOf(editPermanentAddress.getText()));
         mPresenter.getPropertyData().setPropertyEmail(String.valueOf(editEmailAddress.getText()));
         mPresenter.getPropertyData().setRemarks(String.valueOf(editRemarks.getText()));
-        if(mPresenter.getPropertyData().getLatitude() == null) mPresenter.getPropertyData().setLatitude(String.valueOf(latitude));
-        if(mPresenter.getPropertyData().getLongitude() == null) mPresenter.getPropertyData().setLongitude(String.valueOf(longitude));
+        mPresenter.getPropertyData().setNewContact(String.valueOf(contactNew.getText()));
+        if (mPresenter.getPropertyData().getLatitude() == null)
+            mPresenter.getPropertyData().setLatitude(String.valueOf(latitude));
+        if (mPresenter.getPropertyData().getLongitude() == null)
+            mPresenter.getPropertyData().setLongitude(String.valueOf(longitude));
         mPresenter.registerOfflineFile();
         new LovelyInfoDialog(getActivity())
                 .setTopColorRes(android.R.color.white)
@@ -234,9 +291,9 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
         getActivity().onBackPressed();
     }
 
-    public void navigate(){
+    public void navigate() {
         if (TextUtils.isEmpty(mPresenter.getPropertyData().getLatitude()) || TextUtils.isEmpty(mPresenter.getPropertyData().getLongitude())) {
-            Toast.makeText(getActivity(),"Sorry can't navigate.Location of the property not defined!",Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), "Sorry can't navigate.Location of the property not defined!", Toast.LENGTH_LONG).show();
             return;
         }
         String uriString = "http://maps.google.com/maps?daddr=" + mPresenter.getPropertyData().getLatitude() + "," + mPresenter.getPropertyData().getLongitude();
@@ -245,6 +302,15 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
         startActivity(intent);
     }
 
+    @Nullable
+    @Optional
+    @OnClick(R.id.clear)
+    public void clearSignaturePad() {
+        signaturePad.clear();
+    }
+
+    @Nullable
+    @Optional
     @OnClick(R.id.btn_take_image)
     public void openPopUpForImageGrab() {
         final CharSequence[] items = {"Take photo", "Pic from gallery"};
@@ -431,23 +497,26 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
-    public static FormFragment newInstance(PropertyDto propertyDto, Location location){
+    public static FormFragment newInstance(PropertyDto propertyDto, Location location, TagType tagType) {
         FormFragment fragment = new FormFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable(PROPERTY_DATA, propertyDto);
         bundle.putParcelable(LOCATION_DATA, location);
+        bundle.putSerializable(TAG_TYPE, tagType);
         fragment.setArguments(bundle);
         return fragment;
     }
 
     @Override
     public Bitmap getSignatureBitmap() {
+        if (signaturePad == null) return null;
         return signaturePad.getSignatureBitmap();
     }
 
     @Override
     public Bitmap getPhotoBitmap() {
-        return ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+        if (imageView == null) return null;
+        else return ((BitmapDrawable) imageView.getDrawable()).getBitmap();
     }
 
     @Override

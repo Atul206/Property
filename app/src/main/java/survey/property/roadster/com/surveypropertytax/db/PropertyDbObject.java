@@ -21,28 +21,31 @@ public class PropertyDbObject {
     @ColumnInfo(name = "property_id")
     private String propertyId;
 
+    @Nullable
     @ColumnInfo(name = "name")
     private String propertyName;
 
-    @NonNull
+    @Nullable
     @ColumnInfo(name = "contact_no")
     private String contactNo;
 
-    @NonNull
+    @Nullable
     @ColumnInfo(name = "address")
     private String address;
 
-    @NonNull
+    @Nullable
     @ColumnInfo(name = "latitude")
     private String latitude;
 
-    @NonNull
+    @Nullable
     @ColumnInfo(name = "longitude")
     private String longitude;
 
+    @Nullable
     @ColumnInfo(name = "url_signature")
     private String urlSignature;
 
+    @Nullable
     @ColumnInfo(name = "url_property_image")
     private String urlPropertyImage;
 

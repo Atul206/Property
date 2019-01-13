@@ -5,4 +5,7 @@ import ui.data.PropertyData;
 
 public interface HomeView extends BaseView {
     void updateList(PropertyData propertyData);
+    void searchList(PropertyData propertyData);
+
+    void readData(String uid);
 }

@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="2">
+
+            <TextView
+                style="@style/TextForKey"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="@string/property_id"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <EditText
+                android:id="@+id/edit_property_id"
+                style="@style/TextForValue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Property Id"
+                android:enabled="false"
+                android:imeOptions="actionNext"
+                android:inputType="textNoSuggestions"
+                android:singleLine="true"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <TextView
+                style="@style/TextForKey"
+                android:layout_marginTop="12dp"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <EditText
+                android:id="@+id/edit_property_name"
+                style="@style/TextForValue"
+                android:layout_marginTop="12dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Enter name"
+                android:enabled="false"
+                android:imeOptions="actionNext"
+                android:inputType="textNoSuggestions"
+                android:singleLine="true"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <TextView
+                style="@style/TextForKey"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Mobile No."
+                android:textColor="@color/colorPrimaryDark" />
+
+            <EditText
+                android:id="@+id/edit_property_contact_no"
+                style="@style/TextForValue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:hint="Enter contact no"
+                android:imeOptions="actionDone"
+                android:inputType="phone"
+                android:maxLength="10"
+                android:singleLine="true"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <TextView
+                android:visibility="gone"
+                style="@style/TextForKey"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Email Id."
+                android:textColor="@color/colorPrimaryDark" />
+
+            <EditText
+                android:visibility="gone"
+                android:id="@+id/edit_property_email_id"
+                style="@style/TextForValue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:hint="Enter contact no"
+                android:imeOptions="actionDone"
+                android:inputType="textEmailAddress"
+                android:maxLength="30"
+                android:singleLine="true"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <TextView
+                android:visibility="gone"
+                style="@style/TextForKey"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Add Contact"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <EditText
+                android:visibility="gone"
+                android:id="@+id/edit_property_contact_no_new"
+                style="@style/TextForValue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:hint="Enter contact no"
+                android:imeOptions="actionDone"
+                android:inputType="phone"
+                android:maxLength="10"
+                android:singleLine="true"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <TextView
+                style="@style/TextForKey"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Address."
+                android:textColor="@color/colorPrimaryDark" />
+
+            <EditText
+                android:id="@+id/edit_property_address"
+                style="@style/TextForValue"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_columnSpan="2"
+                android:gravity="top"
+                android:layout_gravity="fill_horizontal|top"
+                android:layout_marginTop="4dp"
+                android:maxLines="4"
+                android:background="@drawable/boundary_round_corner"
+                android:hint="Enter contact no"
+                android:imeOptions="actionDone"
+                android:inputType="textMultiLine"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <TextView
+                android:visibility="gone"
+                style="@style/TextForKey"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Per.Address"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <EditText
+                android:visibility="gone"
+                android:id="@+id/edit_property_paddress"
+                style="@style/TextForValue"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_columnSpan="2"
+                android:gravity="top"
+                android:layout_gravity="fill_horizontal|top"
+                android:layout_marginTop="4dp"
+                android:maxLines="4"
+                android:background="@drawable/boundary_round_corner"
+                android:hint="Enter contact no"
+                android:imeOptions="actionDone"
+                android:inputType="textMultiLine"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <TextView
+                style="@style/TextForKey"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Reason"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <com.jaredrummler.materialspinner.MaterialSpinner
+                android:id="@+id/spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_columnSpan="2"
+                android:gravity="top"
+                app:ms_text_color="@color/colorPrimary"
+                app:ms_arrow_tint="@color/colorPrimaryDark"
+                app:ms_background_color="@color/extraLightcolorGrey"
+                android:layout_gravity="fill_horizontal|top"
+                android:layout_marginTop="4dp"/>
+
+
+            <TextView
+                style="@style/TextForKey"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Remark"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <EditText
+                android:id="@+id/edit_property_remark"
+                style="@style/TextForValue"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_columnSpan="2"
+                android:gravity="top"
+                android:layout_gravity="fill_horizontal|top"
+                android:layout_marginTop="4dp"
+                android:maxLines="4"
+                android:background="@drawable/boundary_round_corner"
+                android:hint="Enter contact no"
+                android:imeOptions="actionDone"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/colorPrimaryDark" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_columnSpan="2"
+                android:layout_gravity="fill_horizontal|center"
+                android:layout_marginTop="12dp"
+                android:text="Take photo"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <ImageView
+                android:id="@+id/image_view"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_columnSpan="2"
+                android:layout_gravity="fill_horizontal|center"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/boundary_round_corner" />
+
+            <Button
+                android:id="@+id/btn_take_image"
+                android:layout_width="120dp"
+                android:layout_columnSpan="2"
+                android:layout_gravity="fill_horizontal|center"
+                android:text="TAKE IMAGE"
+                android:textColor="@android:color/white" />
+
+
+            <Button
+                android:id="@+id/btn_save_form"
+                android:layout_width="120dp"
+                android:layout_columnSpan="2"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="18dp"
+                android:text="SUBMIT"
+                android:textColor="@android:color/white" />
+
+
+        </GridLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>

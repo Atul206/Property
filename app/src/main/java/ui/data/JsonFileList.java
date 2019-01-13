@@ -8,7 +8,7 @@ import java.util.List;
 
 public class JsonFileList implements Serializable {
 
-    @SerializedName("Sheet1")
+    @SerializedName("sheet1")
     @Expose
     private List<JsonToPojo> Sheet1;
 

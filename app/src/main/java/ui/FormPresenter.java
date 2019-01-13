@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import survey.property.roadster.com.surveypropertytax.BasePresenter;
 import survey.property.roadster.com.surveypropertytax.PApplication;
 import ui.data.PropertyDto;
+import ui.enums.TagType;
 
 public class FormPresenter extends BasePresenter<FormView> {
 
@@ -21,6 +22,7 @@ public class FormPresenter extends BasePresenter<FormView> {
     @Inject
     DatabaseReference databaseReference;
     private Location lastLocation;
+    private TagType tagType;
 
     @Inject
     public FormPresenter() {
@@ -41,8 +43,12 @@ public class FormPresenter extends BasePresenter<FormView> {
     }
 
     public void registerOfflineFile() {
-        propertyData.setSingatureBitmap(view.getSignatureBitmap());
-        propertyData.setPhotoBitmap(view.getPhotoBitmap());
+        if(view.getSignatureBitmap() != null) {
+            propertyData.setSingatureBitmap(view.getSignatureBitmap());
+        }
+        if(view.getPhotoBitmap() != null) {
+            propertyData.setPhotoBitmap(view.getPhotoBitmap());
+        }
         view.getApplicationInstance().addOfflinePropertyItem(propertyData);
     }
 
@@ -52,5 +58,13 @@ public class FormPresenter extends BasePresenter<FormView> {
 
     public Location getLastLocation() {
         return lastLocation;
+    }
+
+    public void setTagType(TagType tagType) {
+        this.tagType = tagType;
+    }
+
+    public TagType getTagType() {
+        return tagType;
     }
 }

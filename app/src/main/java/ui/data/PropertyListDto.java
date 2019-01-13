@@ -23,7 +23,7 @@ public class PropertyListDto implements PropertyData {
     @Override
     public void processData(){
         for(PropertyDbObject p: propertyDbObjects) {
-            propertyDtoList.add(new PropertyDto(p.getPropertyId(), p.getPropertyName(), p.getContactNo(), p.getAddress(), p.getLatitude(), p.getLongitude(), p.getUrlSignature(), p.getUrlPropertyImage()));
+            propertyDtoList.add(new PropertyDto(p.getUid(), p.getPropertyId(), p.getPropertyName(), p.getContactNo(), p.getAddress(), p.getLatitude(), p.getLongitude(), p.getUrlSignature(), p.getUrlPropertyImage()));
         }
         Collections.sort(propertyDtoList, new SortByDistance());
     }

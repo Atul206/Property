@@ -2,6 +2,7 @@ package ui.activity;
 
 import android.Manifest;
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
@@ -25,6 +26,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.yarolegovich.lovelydialog.LovelyInfoDialog;
+import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
 import agency.tango.materialintroscreen.MaterialIntroActivity;
 import agency.tango.materialintroscreen.MessageButtonBehaviour;
@@ -46,10 +49,12 @@ public class LoginIntroActivity extends MaterialIntroActivity implements LoaderM
 
     private  GoogleSignInOptions gso;
 
+    private Context context;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        context = this;
         mListener = firebaseAuth -> {
 
             if (firebaseAuth.getCurrentUser() != null) {
@@ -149,6 +154,20 @@ public class LoginIntroActivity extends MaterialIntroActivity implements LoaderM
                             Log.d(TAG, "signInWithCredential:success");
                             //Snackbar.make(findViewById(R.id.main_layout), "Authentication Success.", Snackbar.LENGTH_SHORT).show();
                             FirebaseUser user = firebaseAuth.getCurrentUser();
+                            new LovelyStandardDialog(context, LovelyStandardDialog.ButtonLayout.VERTICAL)
+                                    .setTopColorRes(android.R.color.white)
+                                    .setIcon(R.drawable.ic_success)
+                                    .setTitle("Login success")
+                                    .setMessage(user.getEmail())
+                                    .setPositiveButton(android.R.string.ok, new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            startActivity(new Intent(LoginIntroActivity.this, HomeActivity.class));
+                                            onFinish();
+                                        }
+                                    })
+                                    .setNegativeButton(android.R.string.no, null)
+                                    .show();
                             //updateUI(user);
                         } else {
                             //startActivity(new Intent(LoginActivity.this, MainActivity.class));

@@ -8,6 +8,7 @@ import java.io.Serializable;
 import ui.LocationUtil.LocationHelper;
 
 public class PropertyDto implements Serializable {
+    int uid;
     String propertyId;
     String propertyName;
     String contactNo;
@@ -23,8 +24,11 @@ public class PropertyDto implements Serializable {
     private String permanentAddress;
     private String remarks;
     private String propertyEmail;
+    private String newContact;
+    private String reason;
 
-    public PropertyDto(String propertyId, String propertyName, String contactNo, String address, String latitude, String longitude, String urlSignature, String urlPropertyImage) {
+    public PropertyDto(int uid, String propertyId, String propertyName, String contactNo, String address, String latitude, String longitude, String urlSignature, String urlPropertyImage) {
+        this.uid = uid;
         this.propertyId = propertyId;
         this.propertyName = propertyName;
         this.contactNo = contactNo;
@@ -154,5 +158,29 @@ public class PropertyDto implements Serializable {
 
     public void setPropertyEmail(String propertyEmail) {
         this.propertyEmail = propertyEmail;
+    }
+
+    public String getNewContact() {
+        return newContact;
+    }
+
+    public void setNewContact(String newContact) {
+        this.newContact = newContact;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public int getUid() {
+        return uid;
+    }
+
+    public void setUid(int uid) {
+        this.uid = uid;
     }
 }

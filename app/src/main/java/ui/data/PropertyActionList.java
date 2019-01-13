@@ -23,7 +23,7 @@ public class PropertyActionList implements PropertyData {
     }
 
     @Override
-    public List<String> getItem() {
-        return propertyActions;
+    public List<PropertyDto> getItem() {
+        return null;
     }
 }

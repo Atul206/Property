@@ -18,6 +18,9 @@ public interface PropertyLoadDao {
     @Query("SELECT *from property where uid not null")
     Flowable<List<PropertyDbObject>> getAllProperties();
 
+    @Query("SELECT *from property where uid not null and uid > :uid order by uid limit 10")
+    Flowable<List<PropertyDbObject>> getPropertyAfter(int uid);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<PropertyDbObject> propertyDbObjects);
 
@@ -36,7 +39,6 @@ public interface PropertyLoadDao {
     @Query("SELECT count(*) from property")
     Flowable<Integer> isEmpty();
 
-    @Query("SELECT *from property where name like '%' || :arg || '%' or " +
-            "property_id like '%' || :arg || '%'")
+    @Query("SELECT *from property where property_id like '%' || :arg || '%'")
     Flowable<List<PropertyDbObject>> getSearchProperties(String arg);
 }

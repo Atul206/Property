@@ -3,7 +3,6 @@ package survey.property.roadster.com.surveypropertytax;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.firebase.jobdispatcher.Constraint;
@@ -12,18 +11,20 @@ import com.firebase.jobdispatcher.Job;
 import com.firebase.jobdispatcher.Lifetime;
 import com.firebase.jobdispatcher.RetryStrategy;
 import com.firebase.jobdispatcher.Trigger;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+
+import org.json.JSONException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -63,6 +64,221 @@ public class PApplication extends DaggerBaseApplication {
 
     private List<PropertyDbObject> propertyDbObjects;
 
+    private String[] fileName = {
+            "data.json",
+            "file_1000.json",
+            "file_2000.json",
+            "file_3000.json",
+            "file_4000.json",
+            "file_5000.json",
+            "file_6000.json",
+            "file_7000.json",
+            "file_8000.json",
+            "file_9000.json",
+            "file_10000.json",
+            "file_11000.json",
+            "file_12000.json",
+            "file_13000.json",
+            "file_14000.json",
+            "file_15000.json",
+            "file_16000.json",
+            "file_17000.json",
+            "file_18000.json",
+            "file_19000.json",
+            "file_20000.json",
+            "file_21000.json",
+            "file_22000.json",
+            "file_23000.json",
+            "file_24000.json",
+            "file_25000.json",
+            "file_26000.json",
+            "file_27000.json",
+            "file_28000.json",
+            "file_29000.json",
+            "file_30000.json",
+            "file_31000.json",
+            "file_32000.json",
+            "file_33000.json",
+            "file_34000.json",
+            "file_35000.json",
+            "file_36000.json",
+            "file_37000.json",
+            "file_38000.json",
+            "file_39000.json",
+            "file_40000.json",
+            "file_41000.json",
+            "file_42000.json",
+            "file_43000.json",
+            "file_44000.json",
+            "file_45000.json",
+            "file_46000.json",
+            "file_47000.json",
+            "file_48000.json",
+            "file_49000.json",
+            "file_50000.json",
+            "file_51000.json",
+            "file_52000.json",
+            "file_53000.json",
+            "file_54000.json",
+            "file_55000.json",
+            "file_56000.json",
+            "file_57000.json",
+            "file_58000.json",
+            "file_59000.json",
+            "file_60000.json",
+            "file_61000.json",
+            "file_62000.json",
+            "file_63000.json",
+            "file_64000.json",
+            "file_65000.json",
+            "file_66000.json",
+            "file_67000.json",
+            "file_68000.json",
+            "file_69000.json",
+            "file_70000.json",
+            "file_71000.json",
+            "file_72000.json",
+            "file_73000.json",
+            "file_74000.json",
+            "file_75000.json",
+            "file_76000.json",
+            "file_77000.json",
+            "file_78000.json",
+            "file_79000.json",
+            "file_80000.json",
+            "file_81000.json",
+            "file_82000.json",
+            "file_83000.json",
+            "file_84000.json",
+            "file_85000.json",
+            "file_86000.json",
+            "file_87000.json",
+            "file_88000.json",
+            "file_89000.json",
+            "file_90000.json",
+            "file_91000.json",
+            "file_92000.json",
+            "file_93000.json",
+            "file_94000.json",
+            "file_95000.json",
+            "file_96000.json",
+            "file_97000.json",
+            "file_98000.json",
+            "file_99000.json",
+            "file_100000.json",
+            "file_101000.json",
+            "file_102000.json",
+            "file_103000.json",
+            "file_104000.json",
+            "file_105000.json",
+            "file_106000.json",
+            "file_107000.json",
+            "file_108000.json",
+            "file_109000.json",
+            "file_110000.json",
+            "file_111000.json",
+            "file_112000.json",
+            "file_113000.json",
+            "file_114000.json",
+            "file_115000.json",
+            "file_116000.json",
+            "file_117000.json",
+            "file_118000.json",
+            "file_119000.json",
+            "file_120000.json",
+            "file_121000.json",
+            "file_122000.json",
+            "file_123000.json",
+            "file_124000.json",
+            "file_125000.json",
+            "file_126000.json",
+            "file_127000.json",
+            "file_128000.json",
+            "file_129000.json",
+            "file_130000.json",
+            "file_131000.json",
+            "file_132000.json",
+            "file_133000.json",
+            "file_134000.json",
+            "file_135000.json",
+            "file_136000.json",
+            "file_137000.json",
+            "file_138000.json",
+            "file_139000.json",
+            "file_140000.json",
+            "file_141000.json",
+            "file_142000.json",
+            "file_143000.json",
+            "file_144000.json",
+            "file_145000.json",
+            "file_146000.json",
+            "file_147000.json",
+            "file_148000.json",
+            "file_149000.json",
+            "file_150000.json",
+            "file_151000.json",
+            "file_152000.json",
+            "file_153000.json",
+            "file_154000.json",
+            "file_155000.json",
+            "file_156000.json",
+            "file_157000.json",
+            "file_158000.json",
+            "file_159000.json",
+            "file_160000.json",
+            "file_161000.json",
+            "file_162000.json",
+            "file_163000.json",
+            "file_164000.json",
+            "file_165000.json",
+            "file_166000.json",
+            "file_167000.json",
+            "file_168000.json",
+            "file_169000.json",
+            "file_170000.json",
+            "file_171000.json",
+            "file_172000.json",
+            "file_173000.json",
+            "file_174000.json",
+            "file_175000.json",
+            "file_176000.json",
+            "file_177000.json",
+            "file_178000.json",
+            "file_179000.json",
+            "file_180000.json",
+            "file_181000.json",
+            "file_182000.json",
+            "file_183000.json",
+            "file_184000.json",
+            "file_185000.json",
+            "file_186000.json",
+            "file_187000.json",
+            "file_188000.json",
+            "file_189000.json",
+            "file_190000.json",
+            "file_191000.json",
+            "file_192000.json",
+            "file_193000.json",
+            "file_194000.json",
+            "file_195000.json",
+            "file_196000.json",
+            "file_197000.json",
+            "file_198000.json",
+            "file_199000.json",
+            "file_200000.json",
+            "file_201000.json",
+            "file_202000.json",
+            "file_203000.json",
+            "file_204000.json",
+            "file_205000.json",
+            "file_206000.json",
+            "file_207000.json",
+            "file_208000.json",
+            "file_209000.json",
+            "file_210000.json"
+
+    };
+
 
     @Override
     public void onCreate() {
@@ -74,23 +290,32 @@ public class PApplication extends DaggerBaseApplication {
     }
 
     private void readFileFromJsonFile() {
-        Observable.fromCallable(() -> {
-            String json = null;
-            try {
-                InputStream inputStream = this.getAssets().open("data.json");
-                int size = inputStream.available();
-                byte[] buffer = new byte[size];
-                inputStream.read(buffer);
-                inputStream.close();
-                json = new String(buffer, "UTF-8");
+        for(String f:fileName) {
+            Observable.fromCallable(() -> {
+                String json = null;
+                try {
+                    InputStream inputStream = this.getAssets().open(f);
+                    int size = inputStream.available();
+                    byte[] buffer = new byte[size];
+                    inputStream.read(buffer);
+                    inputStream.close();
+                    json = new String(buffer, "UTF-8");
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return new PropertyRepoMapper(new Gson().fromJson(json, JsonFileList.class));
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(propertyRepoMapper -> {
-            setPropertyDbObjects(propertyRepoMapper.getPropertyDbObjectList());
-        });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                //return new PropertyRepoMapper(new JsonFileList());
+                JsonFileList jsonFileLists = new JsonFileList();
+                try {
+                    jsonFileLists = new Gson().fromJson(json, JsonFileList.class);
+                }catch (JsonSyntaxException e){
+                    e.printStackTrace();
+                }
+                return new PropertyRepoMapper(jsonFileLists);
+            }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(propertyRepoMapper -> {
+                setPropertyDbObjects(propertyRepoMapper.getPropertyDbObjectList());
+            });
+        }
     }
 
     @Override
@@ -161,42 +386,50 @@ public class PApplication extends DaggerBaseApplication {
         StorageReference signatureImagesRef = FirebaseStorage.getInstance().getReference().child("signature/" + propertyData.getPropertyId() + "_" + propertyData.getPropertyName() + "_signature.jpg");
 
         Bitmap bitmap = propertyData.getSingatureBitmap();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] data = baos.toByteArray();
+        if(bitmap != null) {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] data = baos.toByteArray();
 
-        UploadTask uploadTask = signatureImagesRef.putBytes(data);
+            UploadTask uploadTask = signatureImagesRef.putBytes(data);
 
-        uploadTask.addOnFailureListener(exception -> {
-            // Handle unsuccessful uploads
-            Log.i("PIC", exception.getMessage());
-        }).addOnSuccessListener(taskSnapshot -> {
-            // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-            // ...
-            propertyData.setSingatureBitmap(null);
-            propertyData.setUrlSignature(taskSnapshot.getDownloadUrl().toString());
+            uploadTask.addOnFailureListener(exception -> {
+                // Handle unsuccessful uploads
+                Log.i("PIC", exception.getMessage());
+            }).addOnSuccessListener(taskSnapshot -> {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                // ...
+                propertyData.setSingatureBitmap(null);
+                propertyData.setUrlSignature(taskSnapshot.getDownloadUrl().toString());
+                uploadPropertyPicture(propertyData);
+            });
+        }else{
             uploadPropertyPicture(propertyData);
-        });
+        }
     }
 
     public void uploadPropertyPicture(PropertyDto propertyData) {
         StorageReference propertyImagesRef = FirebaseStorage.getInstance().getReference().child("photo/" + propertyData.getPropertyId() + "_" + propertyData.getPropertyName() + "_photo.jpg");
         Bitmap bitmap = propertyData.getPhotoBitmap();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] data = baos.toByteArray();
+        if(bitmap != null) {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] data = baos.toByteArray();
 
-        UploadTask uploadTask = propertyImagesRef.putBytes(data);
-        uploadTask.addOnFailureListener(exception -> {
-            // Handle unsuccessful uploads
-            Log.i("PIC", exception.getMessage());
-        }).addOnSuccessListener(taskSnapshot -> {
-            // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-            // ...
-            propertyData.setPhotoBitmap(null);
-            propertyData.setUrlPropertyImage(taskSnapshot.getDownloadUrl().toString());
+            UploadTask uploadTask = propertyImagesRef.putBytes(data);
+            uploadTask.addOnFailureListener(exception -> {
+                // Handle unsuccessful uploads
+                Log.i("PIC", exception.getMessage());
+            }).addOnSuccessListener(taskSnapshot -> {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                // ...
+                propertyData.setPhotoBitmap(null);
+                propertyData.setUrlPropertyImage(taskSnapshot.getDownloadUrl().toString());
+                writeToDatabase(propertyData);
+            });
+        }else{
             writeToDatabase(propertyData);
-        });
+        }
     }
 
     private void writeToDatabase(PropertyDto propertyData) {
@@ -216,5 +449,26 @@ public class PApplication extends DaggerBaseApplication {
         } else {
             Log.d(TAG, "user getting null");
         }
+    }
+
+    public void readDataFromDatabase(String uId){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference reference = database.getReference("property_survey");
+        reference = reference.child(uId);
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                DetailDto value = dataSnapshot.getValue(DetailDto.class);
+                Log.d(TAG, "Value is: " + dataSnapshot.getValue().toString());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
     }
 }
