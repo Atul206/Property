@@ -74,7 +74,7 @@ public class LoginIntroActivity extends MaterialIntroActivity implements LoaderM
                         .backgroundColor(R.color.colorPrimary)
                         .buttonsColor(R.color.colorAccent)
                         .image(R.drawable.property_icon)
-                        .title("Property Tax Survey")
+                        .title("Murfi Express")
                         .description("App provide property tax survey")
                         .build(),
                 new MessageButtonBehaviour(new View.OnClickListener() {

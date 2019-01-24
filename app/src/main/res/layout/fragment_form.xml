@@ -196,6 +196,7 @@
 
 
             <TextView
+                android:id="@+id/mark_label"
                 android:layout_width="0dp"
                 android:layout_columnSpan="2"
                 android:layout_gravity="fill_horizontal|center"

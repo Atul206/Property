@@ -32,7 +32,6 @@
         </activity>
 
         <activity
-            android:label="Property List"
             android:name="ui.activity.LoginIntroActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustNothing">

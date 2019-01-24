@@ -28,6 +28,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.gcacace.signaturepad.views.SignaturePad;
@@ -95,7 +96,12 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
     @Nullable
     @BindView(R.id.edit_property_contact_no_new)
     EditText contactNew;
-
+    @Nullable
+    @BindView(R.id.clear)
+    Button clear;
+    @Nullable
+    @BindView(R.id.mark_label)
+    TextView markLabel;
 
     public static String SURVEY_PIC = "survey_pic";
     public static final int REQUEST_CAMERA = 1;
@@ -213,16 +219,27 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
     public void initLayout() {
         switch (mPresenter.getTagType()) {
             case YES:
-                break;
             case NO:
+                editPropertyContactNo.setText(String.valueOf(mPresenter.getPropertyData().getContactNo()));
+                editPropertyName.setText(String.valueOf(mPresenter.getPropertyData().getPropertyName()));
+                editPropertyAddress.setText(String.valueOf(mPresenter.getPropertyData().getAddress()));
+                editPropertyId.setText(String.valueOf(mPresenter.getPropertyData().getPropertyId()));
+                mPresenter.getPropertyData().setReason("Locked");
                 break;
+            case ADD:
+                editPropertyId.setEnabled(true);
+                editPropertyName.setEnabled(true);
+                contactNew.setEnabled(true);
+                editPropertyAddress.setEnabled(true);
+                if(signaturePad != null) signaturePad.setVisibility(View.GONE);
+                if(imageView != null) imageView.setVisibility(View.GONE);
+                if(clear != null) clear.setVisibility(View.GONE);
+                if(markLabel!= null)markLabel.setVisibility(View.GONE);
+                mPresenter.setPropertyData(new PropertyDto());
             default:
                 return;
         }
-        editPropertyContactNo.setText(String.valueOf(mPresenter.getPropertyData().getContactNo()));
-        editPropertyName.setText(String.valueOf(mPresenter.getPropertyData().getPropertyName()));
-        editPropertyAddress.setText(String.valueOf(mPresenter.getPropertyData().getAddress()));
-        editPropertyId.setText(String.valueOf(mPresenter.getPropertyData().getPropertyId()));
+
     }
 
     @NonNull
@@ -260,16 +277,30 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
                 btnSaveForm.setEnabled(false);
 
             showToast("Couldn't get the location. Make sure location is enabled on the device");
+            return;
         }
-        if(signaturePad != null || imageView != null) {
 
-        }else{
+        if((int)latitude <= 0  &&  (int)longitude <= 0){
+            showToast("Couldn't get the location. Make sure location is enabled on the device");
+            return;
+        }
+        if (signaturePad != null || imageView != null) {
+
+        } else {
             showToast("Signature or photo missing");
             return;
         }
         if (imageBitmap != null) {
             imageView.setDrawingCacheEnabled(true);
             imageView.buildDrawingCache();
+        }
+
+        if(editPropertyId.getText().length() > 0 &&
+                editPropertyAddress.getText().length() > 0 &&
+                editPropertyContactNo.getText().length() > 0){
+        }else{
+            showToast("Please add PropertyId, Address and Contact number");
+            return;
         }
 
         mPresenter.getPropertyData().setPermanentAddress(String.valueOf(editPermanentAddress.getText()));
@@ -280,6 +311,17 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
             mPresenter.getPropertyData().setLatitude(String.valueOf(latitude));
         if (mPresenter.getPropertyData().getLongitude() == null)
             mPresenter.getPropertyData().setLongitude(String.valueOf(longitude));
+
+        switch (mPresenter.getTagType()){
+            case ADD:
+                mPresenter.getPropertyData().setPropertyId(String.valueOf(editPropertyId.getText()));
+                mPresenter.getPropertyData().setAddress(String.valueOf(editPropertyAddress.getText()));
+                mPresenter.getPropertyData().setContactNo(String.valueOf(editPropertyContactNo.getText()));
+                mPresenter.getPropertyData().setPropertyName(String.valueOf(editPropertyName.getText()));
+                break;
+        }
+
+
         mPresenter.registerOfflineFile();
         new LovelyInfoDialog(getActivity())
                 .setTopColorRes(android.R.color.white)
@@ -516,7 +558,7 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
     @Override
     public Bitmap getPhotoBitmap() {
         if (imageView == null) return null;
-        else return ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+        else return ((BitmapDrawable) imageView.getDrawable()) == null? null: ((BitmapDrawable) imageView.getDrawable()).getBitmap();
     }
 
     @Override

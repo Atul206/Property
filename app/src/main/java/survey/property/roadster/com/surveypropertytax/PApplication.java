@@ -290,7 +290,7 @@ public class PApplication extends DaggerBaseApplication {
     }
 
     private void readFileFromJsonFile() {
-        for(String f:fileName) {
+        for (String f : fileName) {
             Observable.fromCallable(() -> {
                 String json = null;
                 try {
@@ -308,11 +308,13 @@ public class PApplication extends DaggerBaseApplication {
                 JsonFileList jsonFileLists = new JsonFileList();
                 try {
                     jsonFileLists = new Gson().fromJson(json, JsonFileList.class);
-                }catch (JsonSyntaxException e){
+                } catch (JsonSyntaxException e) {
+                    Log.d(TAG + " Fallback", f);
                     e.printStackTrace();
                 }
                 return new PropertyRepoMapper(jsonFileLists);
             }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(propertyRepoMapper -> {
+                //Log.d(TAG, f);
                 setPropertyDbObjects(propertyRepoMapper.getPropertyDbObjectList());
             });
         }
@@ -368,13 +370,21 @@ public class PApplication extends DaggerBaseApplication {
     }
 
     public void setPropertyDbObjects(List<PropertyDbObject> propertyDbObjects) {
-        this.propertyDbObjects = propertyDbObjects;
+        if(this.propertyDbObjects == null) {
+            this.propertyDbObjects = new ArrayList<>();
+        }
+        this.propertyDbObjects.addAll(propertyDbObjects);
     }
 
     void uploadData() {
+        List<PropertyDto> removeList = new ArrayList<>();
         if (getPropertyDtos() != null) {
             for (PropertyDto p : getPropertyDtos()) {
                 uploadSignature(p);
+                removeList.add(p);
+            }
+
+            for(PropertyDto p:removeList){
                 removeOfflinePropertyItem(p);
             }
         } else {
@@ -386,7 +396,7 @@ public class PApplication extends DaggerBaseApplication {
         StorageReference signatureImagesRef = FirebaseStorage.getInstance().getReference().child("signature/" + propertyData.getPropertyId() + "_" + propertyData.getPropertyName() + "_signature.jpg");
 
         Bitmap bitmap = propertyData.getSingatureBitmap();
-        if(bitmap != null) {
+        if (bitmap != null) {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             byte[] data = baos.toByteArray();
@@ -403,7 +413,7 @@ public class PApplication extends DaggerBaseApplication {
                 propertyData.setUrlSignature(taskSnapshot.getDownloadUrl().toString());
                 uploadPropertyPicture(propertyData);
             });
-        }else{
+        } else {
             uploadPropertyPicture(propertyData);
         }
     }
@@ -411,7 +421,7 @@ public class PApplication extends DaggerBaseApplication {
     public void uploadPropertyPicture(PropertyDto propertyData) {
         StorageReference propertyImagesRef = FirebaseStorage.getInstance().getReference().child("photo/" + propertyData.getPropertyId() + "_" + propertyData.getPropertyName() + "_photo.jpg");
         Bitmap bitmap = propertyData.getPhotoBitmap();
-        if(bitmap != null) {
+        if (bitmap != null) {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             byte[] data = baos.toByteArray();
@@ -427,7 +437,7 @@ public class PApplication extends DaggerBaseApplication {
                 propertyData.setUrlPropertyImage(taskSnapshot.getDownloadUrl().toString());
                 writeToDatabase(propertyData);
             });
-        }else{
+        } else {
             writeToDatabase(propertyData);
         }
     }
@@ -451,7 +461,7 @@ public class PApplication extends DaggerBaseApplication {
         }
     }
 
-    public void readDataFromDatabase(String uId){
+    public void readDataFromDatabase(String uId) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference reference = database.getReference("property_survey");
         reference = reference.child(uId);

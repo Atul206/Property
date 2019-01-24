@@ -62,6 +62,9 @@ public class HomeFragment extends SurveyBaseFragment<HomePresenter, HomeFragment
     @BindView(R.id.fab)
     FloatingActionButton fab;
 
+    @BindView(R.id.fab2)
+    FloatingActionButton fab2;
+
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
 
@@ -124,6 +127,13 @@ public class HomeFragment extends SurveyBaseFragment<HomePresenter, HomeFragment
         }
         getActivityCommunicator().gotoScanFragment();
     }
+
+
+    @OnClick(R.id.fab2)
+    void onFab2Click(){
+        getActivityCommunicator().gotoFormFragment(null, TagType.ADD);
+    }
+
 
     @Override
     public void postInit() {
@@ -197,7 +207,9 @@ public class HomeFragment extends SurveyBaseFragment<HomePresenter, HomeFragment
         getAdapter().removeAll();
         List<PropertyDto> data = propertyData.getItem();
         if(null != data && !data.isEmpty()) {
-            data.remove(data.size() - 1);
+            if(data.size() > 1) {
+                data.remove(data.size() - 1);
+            }
             getAdapter().addItem(data);
             mPresenter.updateCurrentPage(0);
         }

@@ -27,6 +27,9 @@ public class PropertyDto implements Serializable {
     private String newContact;
     private String reason;
 
+    public PropertyDto() {
+    }
+
     public PropertyDto(int uid, String propertyId, String propertyName, String contactNo, String address, String latitude, String longitude, String urlSignature, String urlPropertyImage) {
         this.uid = uid;
         this.propertyId = propertyId;

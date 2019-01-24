@@ -32,6 +32,8 @@ public class DetailDto{
         data.put("propertyEmailId", propertyData.getPropertyEmail());
         data.put("propertyPermanentAddress", propertyData.getPropertyEmail());
         data.put("propertyRemark", propertyData.getRemarks());
+        data.put("propertyReason", propertyData.getReason());
+        data.put("propertyNewContact",propertyData.getNewContact());
     }
 
     public String getPhoneNumber() {

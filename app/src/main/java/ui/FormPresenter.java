@@ -43,11 +43,16 @@ public class FormPresenter extends BasePresenter<FormView> {
     }
 
     public void registerOfflineFile() {
-        if(view.getSignatureBitmap() != null) {
-            propertyData.setSingatureBitmap(view.getSignatureBitmap());
-        }
-        if(view.getPhotoBitmap() != null) {
-            propertyData.setPhotoBitmap(view.getPhotoBitmap());
+        switch (tagType){
+            case ADD:
+                break;
+            default:
+                if(view.getSignatureBitmap() != null) {
+                    propertyData.setSingatureBitmap(view.getSignatureBitmap());
+                }
+                if(view.getPhotoBitmap() != null) {
+                    propertyData.setPhotoBitmap(view.getPhotoBitmap());
+                }
         }
         view.getApplicationInstance().addOfflinePropertyItem(propertyData);
     }
