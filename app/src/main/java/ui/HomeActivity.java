@@ -88,18 +88,18 @@ public class HomeActivity extends SurveyBaseActivity
                 //This will add Don't show again checkbox to the dialog. You can pass any ID as argument
                 .setTitle("Property id - " + String.valueOf(text))
                 .setMessage("Please select an action")
-                .setPositiveButton(android.R.string.ok, new View.OnClickListener() {
+                .setPositiveButton(R.string.yes, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         startFragment(FormFragment.newInstance(propertyDto, getLastLocation(), TagType.YES),true);
                         Toast.makeText(HomeActivity.this, "Yes clicked", Toast.LENGTH_SHORT).show();
                     }
                 })
-                .setNegativeButton(android.R.string.no, new View.OnClickListener(){
+                .setNegativeButton(R.string.no, new View.OnClickListener(){
                     @Override
                     public void onClick(View v) {
                         startFragment(FormFragment.newInstance(propertyDto, getLastLocation(), TagType.NO),true);
-                        Toast.makeText(HomeActivity.this, "Yes clicked", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(HomeActivity.this, "No clicked", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .show();

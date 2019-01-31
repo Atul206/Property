@@ -46,7 +46,7 @@ public class PropertyDto implements Serializable {
     }
 
     public String getPropertyName() {
-        return (propertyName == null || propertyName.length() == 0) ? " - " : propertyName;
+        return (propertyName == null || propertyName.length() == 0) ? "" : propertyName;
     }
 
     public void setPropertyName(String propertyName) {
@@ -54,7 +54,7 @@ public class PropertyDto implements Serializable {
     }
 
     public String getPropertyId() {
-        return (propertyId == null || propertyId.length() == 0) ? " - " : propertyId;
+        return (propertyId == null || propertyId.length() == 0) ? "" : propertyId;
     }
 
     public void setPropertyId(String propertyId) {
@@ -70,6 +70,7 @@ public class PropertyDto implements Serializable {
     }
 
     public String getContactNo() {
+        if(null == contactNo) contactNo = "";
         return contactNo;
     }
 
@@ -134,7 +135,7 @@ public class PropertyDto implements Serializable {
     }
 
     public String getAddress() {
-        return (address == null || address.length() == 0) ? " - " : address;
+        return (address == null || address.length() == 0) ? "" : address;
     }
 
     public void setAddress(String address) {
