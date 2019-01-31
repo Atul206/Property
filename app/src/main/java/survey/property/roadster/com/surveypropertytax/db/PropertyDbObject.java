@@ -49,7 +49,11 @@ public class PropertyDbObject {
     @ColumnInfo(name = "url_property_image")
     private String urlPropertyImage;
 
-    public PropertyDbObject(@NonNull String propertyId, @NonNull String propertyName, @NonNull String contactNo, @NonNull String address, @NonNull String latitude, @NonNull String longitude, String urlSignature,String urlPropertyImage) {
+    @Nullable
+    @ColumnInfo(name = "is_action_taken")
+    private Boolean isActionTaken;
+
+    public PropertyDbObject(@NonNull String propertyId, @NonNull String propertyName, @NonNull String contactNo, @NonNull String address, @NonNull String latitude, @NonNull String longitude, String urlSignature,String urlPropertyImage, Boolean isActionTaken) {
         this.propertyId = propertyId;
         this.propertyName = propertyName;
         this.contactNo = contactNo;
@@ -140,5 +144,14 @@ public class PropertyDbObject {
 
     public void setUrlPropertyImage(@NonNull String urlPropertyImage) {
         this.urlPropertyImage = urlPropertyImage;
+    }
+
+    @Nullable
+    public Boolean getActionTaken() {
+        return isActionTaken;
+    }
+
+    public void setActionTaken(@Nullable Boolean actionTaken) {
+        isActionTaken = actionTaken;
     }
 }

@@ -1,7 +1,7 @@
 package ui.repo;
 
-import android.location.Location;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import java.util.List;
 
@@ -9,12 +9,14 @@ import javax.inject.Inject;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
-import io.reactivex.FlowableOnSubscribe;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import survey.property.roadster.com.surveypropertytax.db.PropertyDbObject;
 import survey.property.roadster.com.surveypropertytax.db.PropertyLoadDao;
 import ui.data.PropertyListDto;
+
+import static android.support.constraint.Constraints.TAG;
 
 public class PropertyRepository {
 
@@ -39,31 +41,66 @@ public class PropertyRepository {
         return propertyLoadDao.getPropertyAfter(uid)
                 .subscribeOn(Schedulers.io())
                 .map(PropertyListDto::new)
-                .observeOn(AndroidSchedulers.mainThread());
+                .observeOn(Schedulers.io());
+    }
+
+    public void update(int uid, Boolean flag){
+        try{
+            Completable.fromRunnable(() -> {
+                propertyLoadDao.updateData(uid, flag);
+                Log.d(TAG, "update: " + flag);
+            })
+                    .observeOn(Schedulers.io()).subscribeOn(Schedulers.io())
+                    .subscribe( () -> {
+
+                    });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public void insert(PropertyDbObject propertyDbObject) {
-        Completable.fromRunnable(() -> propertyLoadDao.insert(propertyDbObject))
-                .subscribeOn(Schedulers.io())
-                .subscribe(() -> {});
+        try {
+            Completable.fromRunnable(() -> propertyLoadDao.insert(propertyDbObject))
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(() -> {
+                    });
+        }catch (Exception e){
+            System.out.println(e);
+        }
     }
 
     public void insertAll(List<PropertyDbObject> propertyDbObject) {
-        Completable.fromRunnable(() -> propertyLoadDao.insertAll(propertyDbObject))
-                .subscribeOn(Schedulers.io())
-                .subscribe(() -> {});
+        try {
+            Completable.fromRunnable(() -> {
+                try {
+                    propertyLoadDao.insertAll(propertyDbObject);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            })
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(() -> {
+                    });
+        }catch (Exception e){
+            System.out.println(e);
+        }
     }
 
     public Flowable<PropertyListDto> getSearchItem(String search) {
         return propertyLoadDao.getSearchProperties(search)
                 .subscribeOn(Schedulers.io())
                 .map(PropertyListDto::new)
-                .observeOn(AndroidSchedulers.mainThread());
+                .observeOn(Schedulers.io());
     }
 
     public Flowable<Integer> isEmpty() {
         return propertyLoadDao.isEmpty()
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .observeOn(Schedulers.io());
+    }
+
+    public Single<PropertyDbObject> getPropertyOfUid(int uid) {
+        return propertyLoadDao.getAProperty(uid).subscribeOn(Schedulers.io()).observeOn(Schedulers.io());
     }
 }

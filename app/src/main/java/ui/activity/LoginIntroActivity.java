@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -82,7 +83,7 @@ public class LoginIntroActivity extends MaterialIntroActivity implements LoaderM
                     public void onClick(View v) {
                         if(firebaseAuth.getCurrentUser() == null) {
                             signIn();
-                            showMessage("You need to login!");
+                            showMessage("Please wait ! connecting ...");
                         }else{
                             startActivity(new Intent(LoginIntroActivity.this, HomeActivity.class));
                             onFinish();
@@ -120,12 +121,14 @@ public class LoginIntroActivity extends MaterialIntroActivity implements LoaderM
 
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleClientApi);
+        showMessage("fetching account...");
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        showMessage("Please select account...");
         super.onActivityResult(requestCode, resultCode, data);
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
@@ -143,7 +146,7 @@ public class LoginIntroActivity extends MaterialIntroActivity implements LoaderM
             return;
         }
         Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
-
+        showMessage("Authenticating...");
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         firebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -154,6 +157,7 @@ public class LoginIntroActivity extends MaterialIntroActivity implements LoaderM
                             Log.d(TAG, "signInWithCredential:success");
                             //Snackbar.make(findViewById(R.id.main_layout), "Authentication Success.", Snackbar.LENGTH_SHORT).show();
                             FirebaseUser user = firebaseAuth.getCurrentUser();
+                            showMessage("Authentication success");
                             new LovelyStandardDialog(context, LovelyStandardDialog.ButtonLayout.VERTICAL)
                                     .setTopColorRes(android.R.color.white)
                                     .setIcon(R.drawable.ic_success)
@@ -170,6 +174,7 @@ public class LoginIntroActivity extends MaterialIntroActivity implements LoaderM
                                     .show();
                             //updateUI(user);
                         } else {
+                            showMessage("Authenticaton fail! ");
                             //startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());

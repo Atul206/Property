@@ -81,6 +81,9 @@ public class PropertyAdapter extends  LoadingAdapter<PropertyData, PropertyAdapt
 
         public void holdData(int position){
             PropertyDto item = (PropertyDto) data.get(position);
+            if(item.getActionTaken() != null && item.getActionTaken()){
+                mainLayout.setBackground(context.getResources().getDrawable(R.drawable.submit_card_bg));
+            }
             if(item != null && item instanceof PropertyDto) {
                 propertyName.setText(context.getString(R.string.name) + " " +item.getPropertyName());
                 propertyId.setText(context.getString(R.string.property_id) + " " +String.valueOf(item.getPropertyId()));

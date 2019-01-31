@@ -2,19 +2,23 @@ package ui;
 
 import android.annotation.SuppressLint;
 
-import java.util.List;
+import org.joda.time.DateTime;
+
+import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 import survey.property.roadster.com.surveypropertytax.BasePresenter;
-import survey.property.roadster.com.surveypropertytax.db.PropertyDbObject;
+import survey.property.roadster.com.surveypropertytax.db.SubmitedLoadObject;
 import ui.data.PropertyData;
+import ui.repo.LoadRepository;
 import ui.repo.PropertyRepository;
 
 public class HomePresenter extends BasePresenter<HomeView> {
@@ -28,6 +32,9 @@ public class HomePresenter extends BasePresenter<HomeView> {
 
     @Inject
     PropertyRepository propertyRepository;
+
+    @Inject
+    LoadRepository loadRepository;
 
     @Inject
     public HomePresenter() {
@@ -47,25 +54,40 @@ public class HomePresenter extends BasePresenter<HomeView> {
         addCompositeDisposable(propertyRepository.getPropertyAfterUid(mCurrentPage).subscribe(propertyDbObjectList -> {
             view.updateList((PropertyData) propertyDbObjectList);
         }));
+
+        addCompositeDisposable(loadRepository.getAllData().subscribe(loadDb -> {
+            DateTime dateTime = DateTime.now();
+            long startDate = dateTime.minusMinutes(23).getMillis();
+            long endDate = dateTime.getMillis();
+            Set<String> uniqueSet = new HashSet<>();
+            Set<String> uniqueTotalSet = new HashSet<>();
+            for (SubmitedLoadObject s : loadDb) {
+                uniqueTotalSet.add(s.getProperty_db_id());
+                if(s.getCreatedTime() >= startDate && s.getCreatedTime() <= endDate)
+                    uniqueSet.add(s.getProperty_db_id());
+            }
+            view.updateTodayCount(uniqueSet.size(), uniqueTotalSet.size());
+        }));
+
     }
 
     public void loadSearch() {
-        propertyRepository.getSearchItem(searchStr).subscribe(propertyDbObjectList -> {
+        propertyRepository.getSearchItem(searchStr).observeOn(Schedulers.computation()).subscribeOn(AndroidSchedulers.mainThread()).subscribe(propertyDbObjectList -> {
             view.searchList(propertyDbObjectList);
         });
     }
 
     public void generateData() {
         //view.readData(searchStr);
-        List<PropertyDbObject> propertyDbObjectList = view.getApplicationInstance().getPropertyDbObjects();
+        /*List<PropertyDbObject> propertyDbObjectList = view.getApplicationInstance().getPropertyDbObjects();
         if (propertyDbObjectList == null) {
             return;
-        }
-        propertyRepository.isEmpty().delay(1000, TimeUnit.MILLISECONDS).subscribe(i -> {
+        }*/
+        /*propertyRepository.isEmpty().delay(1000, TimeUnit.MILLISECONDS).subscribe(i -> {
             if (i == null || i == 0) {
-                propertyRepository.insertAll(view.getApplicationInstance().getPropertyDbObjects());
+                //propertyRepository.insertAll(view.getApplicationInstance().getPropertyDbObjects());
             }
-        });
+        });*/
     }
 
     @Override

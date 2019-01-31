@@ -10,6 +10,7 @@ import android.arch.persistence.room.Update;
 import java.util.List;
 
 import io.reactivex.Flowable;
+import io.reactivex.Single;
 
 
 @Dao
@@ -21,6 +22,9 @@ public interface PropertyLoadDao {
     @Query("SELECT *from property where uid not null and uid > :uid order by uid limit 10")
     Flowable<List<PropertyDbObject>> getPropertyAfter(int uid);
 
+    @Query("SELECT *from property where uid not null and uid = :id")
+    Single<PropertyDbObject> getAProperty(int id);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<PropertyDbObject> propertyDbObjects);
 
@@ -30,8 +34,8 @@ public interface PropertyLoadDao {
     @Delete
     void delete(PropertyDbObject tripLoadDbObject);
 
-    @Update
-    void update(PropertyDbObject... tripLoadDbObjects);
+    @Query("UPDATE property SET is_action_taken = :flag WHERE uid = :uid")
+    void updateData(int uid, Boolean flag);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(PropertyDbObject tripLoadDbObject);

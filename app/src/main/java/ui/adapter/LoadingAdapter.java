@@ -2,6 +2,7 @@ package ui.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.UiThread;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
@@ -10,6 +11,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import ui.HomeActivity;
 import ui.data.PropertyData;
 import ui.data.PropertyDto;
 import ui.data.PropertyListDto;
@@ -45,8 +47,14 @@ public abstract class LoadingAdapter<T, VH extends RecyclerView.ViewHolder> exte
     abstract VH getMainViewHolder(ViewGroup parent, int viewType);
 
     public void removeAll() {
-        data = null;
-        notifyDataSetChanged();
+        try {
+            ((HomeActivity)context).runOnUiThread(() -> {
+                data = null;
+                notifyDataSetChanged();
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public interface AdapterClickCallback<T> {
@@ -54,11 +62,18 @@ public abstract class LoadingAdapter<T, VH extends RecyclerView.ViewHolder> exte
     }
 
     public void addItem(List<PropertyDto> items){
-        if(data == null) {
-            data = new ArrayList<>();
+        try {
+
+            ((HomeActivity) context).runOnUiThread(() -> {
+                if (data == null) {
+                    data = new ArrayList<>();
+                }
+                data.addAll(items);
+                notifyDataSetChanged();
+            });
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        data.addAll(items);
-        notifyDataSetChanged();
     }
 
     abstract void bindData(VH holder, int p);

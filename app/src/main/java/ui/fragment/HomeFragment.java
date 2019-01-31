@@ -3,19 +3,17 @@ package ui.fragment;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.firebase.storage.StorageReference;
-import com.google.zxing.qrcode.encoder.QRCode;
 
 import java.util.List;
 
@@ -25,12 +23,13 @@ import javax.inject.Named;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
-import dagger.Binds;
 import di.FragmentScope;
+import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 import survey.property.roadster.com.surveypropertytax.BaseIntranction;
 import survey.property.roadster.com.surveypropertytax.R;
 import survey.property.roadster.com.surveypropertytax.SurveyBaseFragment;
+import survey.property.roadster.com.surveypropertytax.db.SubmitedLoadObject;
 import ui.HomeActivity;
 import ui.HomePresenter;
 import ui.HomeView;
@@ -42,7 +41,7 @@ import ui.enums.TagType;
 
 @FragmentScope
 public class HomeFragment extends SurveyBaseFragment<HomePresenter, HomeFragment.LoginIntraction>
-        implements LoadingAdapter.AdapterClickCallback<PropertyData>, HomeView{
+        implements LoadingAdapter.AdapterClickCallback<PropertyData>, HomeView {
 
 
     private static final String QR_CODE_STR = "qr_code_search";
@@ -77,6 +76,12 @@ public class HomeFragment extends SurveyBaseFragment<HomePresenter, HomeFragment
     @BindView(R.id.bottom_sheet)
     LinearLayout bottomSheet;
 
+    @BindView(R.id.todayCount)
+    TextView todayCount;
+
+    @BindView(R.id.totalcount)
+    TextView totalCount;
+
     private BottomSheetBehavior bottomSheetBehavior;
     private String qrCode;
 
@@ -106,15 +111,15 @@ public class HomeFragment extends SurveyBaseFragment<HomePresenter, HomeFragment
         });
     }
 
-    public void setQrCodeStr(String qr){
+    public void setQrCodeStr(String qr) {
         qrCode = qr;
-        if(qrCode != null) {
+        if (qrCode != null) {
             propertySearch.setText(qrCode);
         }
     }
 
     @OnClick(R.id.fab)
-    void onFabClick(){
+    void onFabClick() {
         if (getActivity().getPackageManager().hasSystemFeature(
                 PackageManager.FEATURE_CAMERA)) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -130,7 +135,7 @@ public class HomeFragment extends SurveyBaseFragment<HomePresenter, HomeFragment
 
 
     @OnClick(R.id.fab2)
-    void onFab2Click(){
+    void onFab2Click() {
         getActivityCommunicator().gotoFormFragment(null, TagType.ADD);
     }
 
@@ -140,17 +145,17 @@ public class HomeFragment extends SurveyBaseFragment<HomePresenter, HomeFragment
         super.postInit();
         mPresenter.generateData();
         mPresenter.load();
-        if(qrCode != null && qrCode.length() > 0) {
+        if (qrCode != null && qrCode.length() > 0) {
             propertySearch.setText(qrCode);
         }
     }
 
     @OnTextChanged(R.id.property_search)
-    void onTextSearch(){
+    void onTextSearch() {
         String searchString = propertySearch.getText().toString();
-        if(searchString.length() >= 0){
+        if (searchString.length() >= 0) {
             textSearchObservable.onNext(searchString);
-        }else{
+        } else {
             propertySearch.clearFocus();
             getAdapter().removeAll();
             mPresenter.load();
@@ -167,6 +172,7 @@ public class HomeFragment extends SurveyBaseFragment<HomePresenter, HomeFragment
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(getAdapter());
+        propertySearch.clearFocus();
     }
 
     @NonNull
@@ -185,8 +191,8 @@ public class HomeFragment extends SurveyBaseFragment<HomePresenter, HomeFragment
         getActivityCommunicator().gotoFormFragment(data.get(position), tagType);
     }
 
-    void openBottomSheet(PropertyDto propertyData){
-       getActivityCommunicator().gotoActionFragment(propertyData);
+    void openBottomSheet(PropertyDto propertyData) {
+        getActivityCommunicator().gotoActionFragment(propertyData);
     }
 
     public PropertyAdapter getAdapter() {
@@ -196,18 +202,18 @@ public class HomeFragment extends SurveyBaseFragment<HomePresenter, HomeFragment
     @Override
     public void updateList(PropertyData propertyData) {
         List<PropertyDto> data = propertyData.getItem();
-        if(null != data && !data.isEmpty()) {
+        if (null != data && !data.isEmpty()) {
             getAdapter().addItem(data);
             mPresenter.updateCurrentPage(data.get(data.size() - 1).getUid());
         }
     }
 
     @Override
-    public void searchList(PropertyData propertyData){
+    public void searchList(PropertyData propertyData) {
         getAdapter().removeAll();
         List<PropertyDto> data = propertyData.getItem();
-        if(null != data && !data.isEmpty()) {
-            if(data.size() > 1) {
+        if (null != data && !data.isEmpty()) {
+            if (data.size() > 1) {
                 data.remove(data.size() - 1);
             }
             getAdapter().addItem(data);
@@ -215,7 +221,7 @@ public class HomeFragment extends SurveyBaseFragment<HomePresenter, HomeFragment
         }
     }
 
-    private void onRefresh(){
+    private void onRefresh() {
         getAdapter().removeAll();
         mPresenter.generateData();
         mPresenter.load();
@@ -226,7 +232,9 @@ public class HomeFragment extends SurveyBaseFragment<HomePresenter, HomeFragment
 
     public interface LoginIntraction extends BaseIntranction {
         void gotoActionFragment(PropertyDto propertyData);
+
         void gotoFormFragment(PropertyDto propertyDto, TagType tagType);
+
         void gotoScanFragment();
     }
 
@@ -236,12 +244,21 @@ public class HomeFragment extends SurveyBaseFragment<HomePresenter, HomeFragment
     }
 
     @Override
+    public void updateTodayCount(int count, int totalC) {
+        ((HomeActivity) getActivity()).runOnUiThread(() -> {
+            todayCount.setText(count + " entry submitted in last 24 hour");
+            totalCount.setText("Total " + totalC + " entry submmited till date");
+
+        });
+    }
+
+    @Override
     public void onDestroyView() {
         mPresenter.finish();
         super.onDestroyView();
     }
 
-    public static HomeFragment newInstance(){
+    public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
         return fragment;
     }

@@ -63,7 +63,7 @@ public class PropertyScanFragment extends SurveyBaseFragment<ScanPresenter, Prop
     protected void initListener() {
         mCodeScanner.setDecodeCallback(result -> getActivity().runOnUiThread(() -> {
                 Toast.makeText(getActivity(), result.getText(), Toast.LENGTH_SHORT).show();
-                getActivityCommunicator().qrCodeString(result.getText());
+                getActivityCommunicator().gotoFormFragment(result.getText());
                 getActivity().onBackPressed();
             }
         ));
@@ -89,5 +89,14 @@ public class PropertyScanFragment extends SurveyBaseFragment<ScanPresenter, Prop
 
     public interface PropertyScanFragmentIntraction extends BaseIntranction {
         void qrCodeString(String text);
+
+        void gotoFormFragment(String text);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mCodeScanner.stopPreview();
+        mCodeScanner.releaseResources();
     }
 }

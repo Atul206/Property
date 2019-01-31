@@ -220,6 +220,10 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
         switch (mPresenter.getTagType()) {
             case YES:
             case NO:
+                editPropertyId.setEnabled(true);
+                editPropertyName.setEnabled(true);
+                editPropertyAddress.setEnabled(true);
+                editPropertyContactNo.setEnabled(true);
                 editPropertyContactNo.setText(String.valueOf(mPresenter.getPropertyData().getContactNo()));
                 editPropertyName.setText(String.valueOf(mPresenter.getPropertyData().getPropertyName()));
                 editPropertyAddress.setText(String.valueOf(mPresenter.getPropertyData().getAddress()));
@@ -295,9 +299,7 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
             imageView.buildDrawingCache();
         }
 
-        if(editPropertyId.getText().length() > 0 &&
-                editPropertyAddress.getText().length() > 0 &&
-                editPropertyContactNo.getText().length() > 0){
+        if(editPropertyId.getText().length() > 0){
         }else{
             showToast("Please add PropertyId, Address and Contact number");
             return;
@@ -307,6 +309,7 @@ public class FormFragment extends SurveyBaseFragment<FormPresenter, FormFragment
         mPresenter.getPropertyData().setPropertyEmail(String.valueOf(editEmailAddress.getText()));
         mPresenter.getPropertyData().setRemarks(String.valueOf(editRemarks.getText()));
         mPresenter.getPropertyData().setNewContact(String.valueOf(contactNew.getText()));
+        mPresenter.getPropertyData().setPropertyId(String.valueOf(editPropertyId.getText()));
         if (mPresenter.getPropertyData().getLatitude() == null)
             mPresenter.getPropertyData().setLatitude(String.valueOf(latitude));
         if (mPresenter.getPropertyData().getLongitude() == null)

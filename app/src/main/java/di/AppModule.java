@@ -20,6 +20,7 @@ import dagger.Provides;
 import survey.property.roadster.com.surveypropertytax.PApplication;
 import survey.property.roadster.com.surveypropertytax.db.AppDatabase;
 import survey.property.roadster.com.surveypropertytax.db.PropertyLoadDao;
+import survey.property.roadster.com.surveypropertytax.db.SubmitedLoadDao;
 import ui.LocationUtil.LocationHelper;
 
 @Singleton
@@ -49,6 +50,12 @@ public class AppModule {
     @Singleton
     PropertyLoadDao propertyLoadDao(AppDatabase appDatabase) {
         return appDatabase.propertyLoadDao();
+    }
+
+    @Provides
+    @Singleton
+    SubmitedLoadDao submitedLoadDao(AppDatabase appDatabase) {
+        return appDatabase.submitedLoadDao();
     }
 
 

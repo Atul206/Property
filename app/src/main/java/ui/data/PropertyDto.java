@@ -26,11 +26,12 @@ public class PropertyDto implements Serializable {
     private String propertyEmail;
     private String newContact;
     private String reason;
+    private Boolean isActionTaken = false;
 
     public PropertyDto() {
     }
 
-    public PropertyDto(int uid, String propertyId, String propertyName, String contactNo, String address, String latitude, String longitude, String urlSignature, String urlPropertyImage) {
+    public PropertyDto(int uid, String propertyId, String propertyName, String contactNo, String address, String latitude, String longitude, String urlSignature, String urlPropertyImage, Boolean isActionTaken) {
         this.uid = uid;
         this.propertyId = propertyId;
         this.propertyName = propertyName;
@@ -41,6 +42,7 @@ public class PropertyDto implements Serializable {
         this.urlPropertyImage = urlPropertyImage;
         this.address = address;
         this.distance = 0;
+        this.isActionTaken = isActionTaken;
     }
 
     public String getPropertyName() {
@@ -186,4 +188,14 @@ public class PropertyDto implements Serializable {
     public void setUid(int uid) {
         this.uid = uid;
     }
+
+    public Boolean getActionTaken() {
+        return isActionTaken;
+    }
+
+    public void setActionTaken(Boolean actionTaken) {
+        isActionTaken = actionTaken;
+    }
+
+
 }

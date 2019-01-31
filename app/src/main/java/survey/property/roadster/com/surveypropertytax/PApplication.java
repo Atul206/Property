@@ -24,26 +24,35 @@ import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
+import net.danlew.android.joda.JodaTimeAndroid;
+
 import org.json.JSONException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import di.AppComponent;
 import di.DaggerAppComponent;
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import survey.property.roadster.com.surveypropertytax.db.PropertyDbObject;
+import survey.property.roadster.com.surveypropertytax.db.SubmitedLoadObject;
 import ui.data.DetailDto;
 import ui.data.JsonFileList;
 import ui.data.PropertyDto;
 import ui.data.PropertyRepoMapper;
+import ui.repo.LoadRepository;
+import ui.repo.PropertyRepository;
 
 public class PApplication extends DaggerBaseApplication {
 
@@ -51,6 +60,12 @@ public class PApplication extends DaggerBaseApplication {
 
     @Inject
     FirebaseJobDispatcher firebaseJobDispatcher;
+
+    @Inject
+    PropertyRepository propertyRepository;
+
+    @Inject
+    LoadRepository loadRepository;
 
     SharedPreferences sharedPreferences;
 
@@ -283,13 +298,18 @@ public class PApplication extends DaggerBaseApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        readFileFromJsonFile();
+        JodaTimeAndroid.init(this);
+        propertyRepository.isEmpty().observeOn(Schedulers.computation()).subscribeOn(Schedulers.computation()).delay(1000, TimeUnit.MILLISECONDS).subscribe(i -> {
+            if (i == null || i == 0) {
+                readFileFromJsonFile();
+            }
+        });
         scheduleOfflineJob();
         sharedPreferences = getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE);
 
     }
 
-    private void readFileFromJsonFile() {
+    public void readFileFromJsonFile() {
         for (String f : fileName) {
             Observable.fromCallable(() -> {
                 String json = null;
@@ -313,9 +333,10 @@ public class PApplication extends DaggerBaseApplication {
                     e.printStackTrace();
                 }
                 return new PropertyRepoMapper(jsonFileLists);
-            }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(propertyRepoMapper -> {
+            }).subscribeOn(Schedulers.computation()).observeOn(Schedulers.computation()).subscribe(propertyRepoMapper -> {
                 //Log.d(TAG, f);
-                setPropertyDbObjects(propertyRepoMapper.getPropertyDbObjectList());
+                propertyRepository.insertAll(propertyRepoMapper.getPropertyDbObjectList());
+                //setPropertyDbObjects(propertyRepoMapper.getPropertyDbObjectList());
             });
         }
     }
@@ -456,6 +477,7 @@ public class PApplication extends DaggerBaseApplication {
             DatabaseReference reference = database.getReference("property_survey");
             reference = reference.child(uId);
             reference.setValue(detailDto, (databaseError, databaseReference) -> Log.d(TAG, "Action taken"));
+            loadRepository.insert(new SubmitedLoadObject(propertyData.getPropertyId(), true, Calendar.getInstance().getTimeInMillis()));
         } else {
             Log.d(TAG, "user getting null");
         }

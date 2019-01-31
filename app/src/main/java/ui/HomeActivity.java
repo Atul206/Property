@@ -5,13 +5,18 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.firebase.storage.StorageReference;
+import com.yarolegovich.lovelydialog.LovelyInfoDialog;
+import com.yarolegovich.lovelydialog.LovelyStandardDialog;
 
 import javax.inject.Inject;
 
 import di.ActivityScope;
+import survey.property.roadster.com.surveypropertytax.R;
 import survey.property.roadster.com.surveypropertytax.SurveyBaseActivity;
 import survey.property.roadster.com.surveypropertytax.SurveyBaseFragment;
 import ui.LocationUtil.LocationHelper;
@@ -70,6 +75,34 @@ public class HomeActivity extends SurveyBaseActivity
     @Override
     public Class<? extends SurveyBaseFragment> initialFragmentClass() {
         return HomeFragment.newInstance().getClass();
+    }
+
+    @Override
+    public void gotoFormFragment(String text) {
+        PropertyDto propertyDto = new PropertyDto();
+        propertyDto.setPropertyId(text);
+
+        new LovelyStandardDialog(this, LovelyStandardDialog.ButtonLayout.VERTICAL)
+                .setTopColorRes(android.R.color.white)
+                .setIcon(R.drawable.ic_property_action)
+                //This will add Don't show again checkbox to the dialog. You can pass any ID as argument
+                .setTitle("Property id - " + String.valueOf(text))
+                .setMessage("Please select an action")
+                .setPositiveButton(android.R.string.ok, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startFragment(FormFragment.newInstance(propertyDto, getLastLocation(), TagType.YES),true);
+                        Toast.makeText(HomeActivity.this, "Yes clicked", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        startFragment(FormFragment.newInstance(propertyDto, getLastLocation(), TagType.NO),true);
+                        Toast.makeText(HomeActivity.this, "Yes clicked", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .show();
     }
 
     @Override
